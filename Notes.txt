@@ -1,0 +1,2 @@
+- Implement a map to show nearby pharmacies
+- Use Firebase instead of AWS
