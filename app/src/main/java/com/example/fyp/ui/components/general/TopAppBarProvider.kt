@@ -2,9 +2,11 @@ package com.example.fyp.ui.components.general
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -17,7 +19,10 @@ import com.example.fyp.navigation.AppDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBarProvider(currentScreen: AppDestination)
+fun TopAppBarProvider(
+    currentScreen: AppDestination,
+    canNavigateBack: Boolean,
+    navigateUp: () -> Unit = {})
 {
     TopAppBar(
         title = {
@@ -30,13 +35,26 @@ fun TopAppBarProvider(currentScreen: AppDestination)
             containerColor = MaterialTheme.colorScheme.primary
         ),
         navigationIcon = {
-            Icon(
-                imageVector = Icons.Filled.Menu,
-                contentDescription = "Menu Button",
-                tint = Color.White,
-                modifier = Modifier.size(30.dp)
-            )
+            if (canNavigateBack) {
+                IconButton(onClick = navigateUp) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back Button",
+                        tint = Color.White,
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+            }
+            else
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = "Menu Button",
+                    tint = Color.White,
+                    modifier = Modifier.size(30.dp)
+                )
+
         },
-        actions = { }
+        actions = { DropDownMenu() }
     )
 }
+

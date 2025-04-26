@@ -62,7 +62,12 @@ fun FYPApp(
 
     Scaffold(
         modifier = modifier,
-        topBar = { TopAppBarProvider(currentScreen = currentBottomScreen) },
+        topBar = {
+            TopAppBarProvider(
+                currentScreen = currentBottomScreen,
+                canNavigateBack = navController.previousBackStackEntry != null
+            ) { navController.navigateUp() }
+        },
         content = { paddingValues ->
             NavHostProvider(
                 modifier = modifier,

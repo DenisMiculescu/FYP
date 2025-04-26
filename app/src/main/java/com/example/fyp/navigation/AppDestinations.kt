@@ -3,6 +3,7 @@ package com.example.fyp.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.ui.graphics.vector.ImageVector
 
 interface AppDestination {
@@ -23,5 +24,12 @@ object Receipt : AppDestination {
     override val route = "donate"
 }
 
-val bottomAppBarDestinations = listOf(Receipt, Report)
-val allDestinations = listOf(Report, Receipt)
+object About : AppDestination {
+    override val icon = Icons.Filled.Info
+    override val label = "About"
+    override val route = "about"
+}
+
+
+val bottomAppBarDestinations = listOf(Receipt, Report, About)
+val allDestinations = listOf(Report, Receipt, About)
