@@ -1,4 +1,4 @@
-package com.example.fyp.ui.theme.screens
+package com.example.fyp.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
