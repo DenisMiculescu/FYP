@@ -1,4 +1,4 @@
-package com.example.fyp.ui.screens
+package com.example.fyp.ui.screens.about
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,7 +22,7 @@ import com.example.fyp.R
 import com.example.fyp.ui.components.general.Centre
 
 @Composable
-fun ScreenAbout(modifier: Modifier = Modifier) {
+fun AboutScreen(modifier: Modifier = Modifier) {
 
     Column(
         modifier = modifier.background(MaterialTheme.colorScheme.secondary),

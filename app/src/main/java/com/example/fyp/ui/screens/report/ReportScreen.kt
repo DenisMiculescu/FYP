@@ -1,4 +1,4 @@
-package com.example.fyp.ui.screens
+package com.example.fyp.ui.screens.report
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +20,7 @@ import com.example.fyp.data.ReceiptModel
 import com.example.fyp.ui.components.general.Centre
 
 @Composable
-fun ScreenReport(modifier: Modifier = Modifier,
+fun ReportScreen(modifier: Modifier = Modifier,
                  receipts: SnapshotStateList<ReceiptModel>
 ) {
 

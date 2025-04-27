@@ -9,9 +9,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.fyp.data.ReceiptModel
-import com.example.fyp.ui.screens.ScreenAbout
-import com.example.fyp.ui.screens.ScreenReceipt
-import com.example.fyp.ui.screens.ScreenReport
+import com.example.fyp.ui.screens.about.AboutScreen
+import com.example.fyp.ui.screens.receipt.ReceiptScreen
+import com.example.fyp.ui.screens.report.ReportScreen
 
 
 @Composable
@@ -27,13 +27,13 @@ fun NavHostProvider(
         modifier = Modifier.padding(paddingValues = paddingValues)) {
 
         composable(route = Receipt.route) {
-            ScreenReceipt(modifier = modifier, receipts = receipts)
+            ReceiptScreen(modifier = modifier, receipts = receipts)
         }
         composable(route = Report.route) {
-            ScreenReport(modifier = modifier, receipts = receipts)
+            ReportScreen(modifier = modifier, receipts = receipts)
         }
         composable(route = About.route) {
-            ScreenAbout(modifier = modifier)
+            AboutScreen(modifier = modifier)
         }
     }
 }

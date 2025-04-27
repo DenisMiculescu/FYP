@@ -27,7 +27,9 @@ import com.example.fyp.ui.components.general.BottomAppBarProvider
 import com.example.fyp.ui.components.general.MenuItem
 import com.example.fyp.ui.components.general.TopAppBarProvider
 import com.example.fyp.ui.theme.FYPTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

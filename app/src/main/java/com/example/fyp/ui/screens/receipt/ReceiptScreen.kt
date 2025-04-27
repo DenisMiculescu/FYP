@@ -1,14 +1,12 @@
-package com.example.fyp.ui.screens
+package com.example.fyp.ui.screens.receipt
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fyp.components.receipt.AddReceiptButton
-import com.example.fyp.components.receipt.RadioButtonGroup
 import com.example.fyp.components.receipt.WelcomeText
 import com.example.fyp.components.receipt.AmountPicker
 import com.example.fyp.components.receipt.DescriptionInput
@@ -18,7 +16,7 @@ import java.util.Date
 import kotlin.random.Random
 
 @Composable
-fun ScreenReceipt(modifier: Modifier = Modifier,
+fun ReceiptScreen(modifier: Modifier = Modifier,
                   receipts: SnapshotStateList<ReceiptModel>
 ) {
 
