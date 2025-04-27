@@ -26,4 +26,10 @@ constructor(private val repository: RoomRepository) : ViewModel() {
             }
         }
     }
+
+    fun deleteReceipt(receipt: ReceiptModel) {
+        viewModelScope.launch {
+            repository.delete(receipt)
+        }
+    }
 }

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fyp.R
+import com.example.fyp.data.ReceiptModel
 import com.example.fyp.ui.components.report.ReceiptCardList
 import com.example.fyp.ui.components.report.ReportText
 import com.example.fyp.ui.components.general.Centre
@@ -45,7 +46,11 @@ fun ReportScreen(modifier: Modifier = Modifier,
                     )}
             else
                 ReceiptCardList(
-                    receipts = receipts
+                    receipts = receipts,
+                    onDeleteReceipt = {
+                            receipt: ReceiptModel
+                        -> reportViewModel.deleteReceipt(receipt)
+                    }
                 )
         }
     }

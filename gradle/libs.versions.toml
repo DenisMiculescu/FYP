@@ -22,6 +22,7 @@ roomRuntime = "2.6.1"
 ksp = "2.0.20-1.0.25"
 uiTestAndroid = "1.7.8"
 constraintlayout = "2.2.1"
+roomCommonJvm = "2.7.1"
 
 
 [libraries]
@@ -59,6 +60,7 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRunt
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-ui-test-android = { group = "androidx.compose.ui", name = "ui-test-android", version.ref = "uiTestAndroid" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.ref = "roomCommonJvm" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

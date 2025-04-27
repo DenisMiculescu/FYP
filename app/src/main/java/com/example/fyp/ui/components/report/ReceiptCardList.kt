@@ -11,18 +11,20 @@ import java.text.DateFormat
 @Composable
 internal fun ReceiptCardList(
     receipts: List<ReceiptModel>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDeleteReceipt: (ReceiptModel) -> Unit
 ) {
     LazyColumn {
         items(
             items = receipts,
             key = { receipt -> receipt.id }
         ) { receipt ->
-            ReportCard(
+            ReceiptCard(
                 merchant = receipt.merchant,
                 amount = receipt.amount,
                 description = receipt.description,
                 dateCreated = DateFormat.getDateTimeInstance().format(receipt.dateCreated),
+                onClickDelete = { onDeleteReceipt(receipt) }
             )
         }
     }
