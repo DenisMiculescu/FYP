@@ -27,10 +27,10 @@ fun NavHostProvider(
         modifier = Modifier.padding(paddingValues = paddingValues)) {
 
         composable(route = Receipt.route) {
-            ReceiptScreen(modifier = modifier, receipts = receipts)
+            ReceiptScreen(modifier = modifier)
         }
         composable(route = Report.route) {
-            ReportScreen(modifier = modifier, receipts = receipts)
+            ReportScreen(modifier = modifier)
         }
         composable(route = About.route) {
             AboutScreen(modifier = modifier)

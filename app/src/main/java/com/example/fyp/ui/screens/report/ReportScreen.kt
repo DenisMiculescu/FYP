@@ -6,23 +6,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fyp.R
 import com.example.fyp.ui.components.report.ReceiptCardList
 import com.example.fyp.ui.components.report.ReportText
-import com.example.fyp.data.ReceiptModel
 import com.example.fyp.ui.components.general.Centre
 
 @Composable
 fun ReportScreen(modifier: Modifier = Modifier,
-                 receipts: SnapshotStateList<ReceiptModel>
+                 reportViewModel: ReportViewModel = hiltViewModel()
 ) {
+    val receipts = reportViewModel.uiReceipts.collectAsState().value
 
     Column {
         Column(

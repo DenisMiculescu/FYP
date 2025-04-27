@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,8 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fyp.R
 import com.example.fyp.data.ReceiptModel
+import com.example.fyp.ui.screens.receipt.ReceiptViewModel
+import com.example.fyp.ui.screens.report.ReportViewModel
 import timber.log.Timber
 
 
@@ -30,13 +34,16 @@ import timber.log.Timber
 fun AddReceiptButton(
     modifier: Modifier = Modifier,
     receipt: ReceiptModel,
-    receipts: SnapshotStateList<ReceiptModel>,
+    receiptViewModel: ReceiptViewModel = hiltViewModel(),
+    reportViewModel: ReportViewModel = hiltViewModel(),
 ) {
+
+    val receipts = reportViewModel.uiReceipts.collectAsState().value
 
     Row {
         Button(
             onClick = {
-                receipts.add(receipt)
+                receiptViewModel.insert(receipt)
                 Timber.i("Receipt info : $receipts")
                 Timber.i("Receipt List info : ${receipts.toList()}")
             },

@@ -6,19 +6,23 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fyp.components.receipt.AddReceiptButton
 import com.example.fyp.components.receipt.WelcomeText
 import com.example.fyp.components.receipt.AmountPicker
 import com.example.fyp.components.receipt.DescriptionInput
 import com.example.fyp.components.receipt.MerchantInput
 import com.example.fyp.data.ReceiptModel
+import com.example.fyp.ui.screens.report.ReportViewModel
 import java.util.Date
 import kotlin.random.Random
 
 @Composable
 fun ReceiptScreen(modifier: Modifier = Modifier,
-                  receipts: SnapshotStateList<ReceiptModel>
+                  reportViewModel: ReportViewModel = hiltViewModel()
 ) {
+
+    val receipts = reportViewModel.uiReceipts.collectAsState().value
 
     var merchant by remember { mutableStateOf("") }
     var amount by remember { mutableIntStateOf(10) }
@@ -58,8 +62,7 @@ fun ReceiptScreen(modifier: Modifier = Modifier,
                     amount = amount.toFloat(),
                     dateCreated = Date(),
                     description = description,
-                    userId = Random.nextInt(1, 100000)),
-                receipts = receipts,
+                    userId = Random.nextInt(1, 100000))
             )
         }
     }
