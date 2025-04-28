@@ -19,13 +19,21 @@ import com.example.fyp.data.ReceiptModel
 import com.example.fyp.ui.components.report.ReceiptCardList
 import com.example.fyp.ui.components.report.ReportText
 import com.example.fyp.ui.components.general.Centre
+import com.example.fyp.ui.components.general.ShowError
+import com.example.fyp.ui.components.general.ShowLoader
+import com.example.fyp.ui.components.general.ShowRefreshList
 
 @Composable
 fun ReportScreen(modifier: Modifier = Modifier,
                  reportViewModel: ReportViewModel = hiltViewModel(),
                  onClickReceiptDetails: (Int) -> Unit,
                  ) {
+
     val receipts = reportViewModel.uiReceipts.collectAsState().value
+    val isError = reportViewModel.isErr.value
+    val isLoading = reportViewModel.isLoading.value
+    val error = reportViewModel.error.value
+
 
     Column {
         Column(
@@ -34,8 +42,15 @@ fun ReportScreen(modifier: Modifier = Modifier,
                 end = 24.dp
             ),
         ) {
+
+            if(isLoading) ShowLoader("Loading Receipts...")
+
             ReportText()
-            if (receipts.isEmpty())
+
+//            if(!isError)
+//                ShowRefreshList(onClick = { reportViewModel.getReceipts() })
+
+            if (receipts.isEmpty() && !isError)
                 Centre(Modifier.fillMaxSize()) {
                     Text(
                         color = MaterialTheme.colorScheme.secondary,
@@ -45,15 +60,23 @@ fun ReportScreen(modifier: Modifier = Modifier,
                         textAlign = TextAlign.Center,
                         text = stringResource(R.string.empty_list)
                     )}
-            else
+
+//            if (isError) {
+//                ShowError(headline = error.message!! + " error...",
+//                    subtitle = error.toString(),
+//                    onClick = { reportViewModel.getDonations() })
+//            }
+
+            if (!isError) {
                 ReceiptCardList(
                     receipts = receipts,
                     onClickReceiptDetails = onClickReceiptDetails,
-                    onDeleteReceipt = {
-                            receipt: ReceiptModel
-                        -> reportViewModel.deleteReceipt(receipt)
+                    onDeleteReceipt = { receipt: ReceiptModel
+                        ->
+                        reportViewModel.deleteReceipt(receipt)
                     }
                 )
+            }
         }
     }
 }

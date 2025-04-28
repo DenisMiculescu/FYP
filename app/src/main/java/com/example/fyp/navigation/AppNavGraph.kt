@@ -3,33 +3,36 @@ package com.example.fyp.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.fyp.data.ReceiptModel
 import com.example.fyp.ui.screens.about.AboutScreen
 import com.example.fyp.ui.screens.details.DetailsScreen
+import com.example.fyp.ui.screens.home.HomeScreen
+import com.example.fyp.ui.screens.login.LoginScreen
+import com.example.fyp.ui.screens.profile.ProfileScreen
 import com.example.fyp.ui.screens.receipt.ReceiptScreen
+import com.example.fyp.ui.screens.register.RegisterScreen
 import com.example.fyp.ui.screens.report.ReportScreen
 
 
 @Composable
 fun NavHostProvider(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     navController: NavHostController,
-    paddingValues: PaddingValues,
-    receipts: SnapshotStateList<ReceiptModel>
+    startDestination: AppDestination,
+    paddingValues: PaddingValues
 ) {
     NavHost(
         navController = navController,
-        startDestination = Report.route,
+        startDestination = startDestination.route,
         modifier = Modifier.padding(paddingValues = paddingValues)) {
 
         composable(route = Receipt.route) {
             ReceiptScreen(modifier = modifier)
         }
+
         composable(route = Report.route) {
             ReportScreen(modifier = modifier,
                 onClickReceiptDetails = {
@@ -38,6 +41,7 @@ fun NavHostProvider(
                 },
             )
         }
+
         composable(route = About.route) {
             AboutScreen(modifier = modifier)
         }
@@ -51,6 +55,38 @@ fun NavHostProvider(
             if (id != null) {
                 DetailsScreen()
             }
+        }
+
+        composable(route = Home.route) {
+            //call our 'Home' Screen Here
+            HomeScreen(modifier = modifier)
+        }
+
+        composable(route = Login.route) {
+            //call our 'Login' Screen Here
+            LoginScreen(
+                navController = navController,
+                onLogin = { navController.popBackStack() }
+            )
+        }
+
+        composable(route = Register.route) {
+            //call our 'Register' Screen Here
+            RegisterScreen(
+                navController = navController,
+                onRegister = { navController.popBackStack() }
+            )
+        }
+
+        composable(route = Profile.route) {
+            ProfileScreen(
+                onSignOut = {
+                    navController.popBackStack()
+                    navController.navigate(Login.route) {
+                        popUpTo(Home.route) { inclusive = true }
+                    }
+                },
+            )
         }
 
     }

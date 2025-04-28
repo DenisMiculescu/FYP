@@ -8,11 +8,9 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -52,7 +50,7 @@ fun AddReceiptButton(
             Icon(Icons.Default.Add, contentDescription = "Add Receipt")
             Spacer(modifier.width(width = 4.dp))
             Text(
-                text = stringResource(R.string.donateButton),
+                text = stringResource(R.string.addButton),
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 color = Color.White

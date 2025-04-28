@@ -18,7 +18,7 @@ internal fun ReceiptCardList(
     LazyColumn {
         items(
             items = receipts,
-            key = { receipt -> receipt.id }
+            key = { receipt -> receipt._id }
         ) { receipt ->
             ReceiptCard(
                 merchant = receipt.merchant,

@@ -77,7 +77,7 @@ fun DetailsScreen(
             //Total Amount Field
             ReadOnlyTextField(value = "€" + receipt.amount.toString(),
                 label = "Total Amount")
-            //Date Donated Field
+            //Date Created Field
             ReadOnlyTextField(value = receipt.dateCreated.toString(),
                 label = "Date Created")
 

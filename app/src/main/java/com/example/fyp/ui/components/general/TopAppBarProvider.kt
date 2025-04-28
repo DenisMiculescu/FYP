@@ -16,20 +16,50 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.fyp.navigation.AppDestination
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBarProvider(
+    navController: NavController,
     currentScreen: AppDestination,
     canNavigateBack: Boolean,
-    navigateUp: () -> Unit = {})
+    email: String,
+    name: String,
+    navigateUp: () -> Unit = {}
+)
 {
     TopAppBar(
         title = {
-            Text(
-                text = currentScreen.label,
-                color = Color.White
-            )
+            Column {
+                Text(
+                    text = currentScreen.label,
+                    color = Color.White
+                )
+                Row {
+                    if (name.isNotEmpty())
+                        Text(
+                            text = name,
+                            color = MaterialTheme.colorScheme.tertiaryContainer,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    if (email.isNotEmpty())
+                        Text(
+                            text = " ($email)",
+                            color = Color.LightGray,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                }
+            }
         },
         colors = TopAppBarDefaults.largeTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary
@@ -46,15 +76,18 @@ fun TopAppBarProvider(
                 }
             }
             else
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = "Menu Button",
-                    tint = Color.White,
-                    modifier = Modifier.size(30.dp)
-                )
+                IconButton(onClick = {
+                }, content = {
+
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+                })
 
         },
-        actions = { DropDownMenu() }
+        actions = { DropDownMenu(navController = navController) }
     )
 }
 

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.android.ksp)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -66,6 +67,8 @@ dependencies {
     implementation(libs.androidx.ui.test.android)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.room.common.jvm)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.androidx.lifecycle.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -91,5 +94,16 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.gson)
+
+    //Google Services
+    implementation(libs.play.services.auth)
+
+    //Firebase
+    implementation(libs.firebase.auth)
 
 }

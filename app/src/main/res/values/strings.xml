@@ -2,7 +2,7 @@
     <string name="app_name">FYP</string>
     <string name="appTitle">Welcome!</string>
     <string name="appSubtitle">Please Give Generously</string>
-    <string name="donateButton">Donate</string>
+    <string name="addButton">Add</string>
     <string name="paypal">PayPal</string>
     <string name="direct">Direct</string>
     <string name="amount">Amount</string>
@@ -20,5 +20,25 @@
     <string name="about_message">Receiptly is a receipt storage app, go check it out!!</string>
     <string name="confirm_delete">Confirm Delete?</string>
     <string name="confirm_delete_message">Are you sure you want to delete this receipt?</string>
+
+    <string name="create_account">Create an Account </string>
+    <string name="account_settings">Account Settings</string>
+    <string name="welcome">Welcome Back</string>
+    <string name="first_name">First Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="terms_and_conditions">By continuing you accept our Privacy Policy and Term of Use</string>
+    <string name="terms_and_conditions_header">Term of Use</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="or">or</string>
+    <string name="go_to_login">Already have an account? Login</string>
+
+    <string name="forgot_password">Forgot your password</string>
+    <string name="home">Home</string>
+    <string name="logout">Logout</string>
+
 
 </resources>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "378156117448",
+    "project_id": "receiptly-app",
+    "storage_bucket": "receiptly-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378156117448:android:25976d8843bb6edbe064fd",
+        "android_client_info": {
+          "package_name": "com.example.fyp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyL-NLuG-XxiwFosSuP2oNZzAC-g3IxKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

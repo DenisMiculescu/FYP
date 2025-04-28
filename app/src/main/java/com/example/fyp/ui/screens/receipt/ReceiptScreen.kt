@@ -2,7 +2,6 @@ package com.example.fyp.ui.screens.receipt
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -62,7 +61,7 @@ fun ReceiptScreen(modifier: Modifier = Modifier,
                     amount = amount.toFloat(),
                     dateCreated = Date(),
                     description = description,
-                    userId = Random.nextInt(1, 100000))
+                    )
             )
         }
     }
