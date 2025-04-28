@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.fyp.data.ReceiptModel
 import com.example.fyp.ui.screens.about.AboutScreen
+import com.example.fyp.ui.screens.details.DetailsScreen
 import com.example.fyp.ui.screens.receipt.ReceiptScreen
 import com.example.fyp.ui.screens.report.ReportScreen
 
@@ -30,10 +31,31 @@ fun NavHostProvider(
             ReceiptScreen(modifier = modifier)
         }
         composable(route = Report.route) {
-            ReportScreen(modifier = modifier)
+            ReportScreen(modifier = modifier,
+                onClickReceiptDetails = {
+                        receiptId : Int ->
+                    navController.navigateToReceiptDetails(receiptId)
+                },
+            )
         }
         composable(route = About.route) {
             AboutScreen(modifier = modifier)
         }
+
+        composable(
+            route = Details.route,
+            arguments = Details.arguments
+        )
+        { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getInt(Details.idArg)
+            if (id != null) {
+                DetailsScreen()
+            }
+        }
+
     }
+}
+
+private fun NavHostController.navigateToReceiptDetails(receiptId: Int) {
+    this.navigate("details/$receiptId")
 }

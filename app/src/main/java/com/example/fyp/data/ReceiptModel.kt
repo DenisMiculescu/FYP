@@ -12,6 +12,6 @@ data class ReceiptModel(
     val amount: Float = 0.00F,
     val dateCreated: Date = Date(),
     val userId: Int = 1,
-    val description: String = "MESSAGE!"
+    var description: String = "MESSAGE!"
 )
 

@@ -42,7 +42,8 @@ fun ReceiptCard(
     amount: Float,
     dateCreated: String,
     description: String,
-    onClickDelete: () -> Unit
+    onClickDelete: () -> Unit,
+    onClickReceiptDetails: () -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -55,7 +56,8 @@ fun ReceiptCard(
             amount,
             dateCreated,
             description,
-            onClickDelete
+            onClickDelete,
+            onClickReceiptDetails
         )
     }
 }
@@ -66,7 +68,8 @@ private fun ReceiptCardContent(
     amount: Float,
     dateCreated: String,
     description: String,
-    onClickDelete: () -> Unit
+    onClickDelete: () -> Unit,
+    onClickReceiptDetails: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
@@ -114,7 +117,8 @@ private fun ReceiptCardContent(
                 Text(modifier = Modifier.padding(vertical = 16.dp), text = description)
                 Row(modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween) {
-                    FilledTonalButton(onClick = {}) {
+
+                    FilledTonalButton(onClick = onClickReceiptDetails) {
                         Text(text = "Show More...")
                     }
 

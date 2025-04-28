@@ -22,8 +22,9 @@ import com.example.fyp.ui.components.general.Centre
 
 @Composable
 fun ReportScreen(modifier: Modifier = Modifier,
-                 reportViewModel: ReportViewModel = hiltViewModel()
-) {
+                 reportViewModel: ReportViewModel = hiltViewModel(),
+                 onClickReceiptDetails: (Int) -> Unit,
+                 ) {
     val receipts = reportViewModel.uiReceipts.collectAsState().value
 
     Column {
@@ -47,6 +48,7 @@ fun ReportScreen(modifier: Modifier = Modifier,
             else
                 ReceiptCardList(
                     receipts = receipts,
+                    onClickReceiptDetails = onClickReceiptDetails,
                     onDeleteReceipt = {
                             receipt: ReceiptModel
                         -> reportViewModel.deleteReceipt(receipt)

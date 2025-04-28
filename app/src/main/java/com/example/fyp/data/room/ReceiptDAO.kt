@@ -16,9 +16,13 @@ interface ReceiptDAO {
     @Insert
     suspend fun insert(receipt: ReceiptModel)
 
-    @Update
-    suspend fun update(receipt: ReceiptModel)
+    @Query("UPDATE receiptmodel SET description=:message WHERE id = :id")
+    suspend fun update(id: Int, message:String)
 
     @Delete
     suspend fun delete(receipt: ReceiptModel)
+
+    @Query("SELECT * FROM receiptmodel WHERE id=:id")
+    fun get(id: Int): Flow<ReceiptModel>
+
 }

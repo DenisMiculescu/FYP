@@ -12,7 +12,8 @@ import java.text.DateFormat
 internal fun ReceiptCardList(
     receipts: List<ReceiptModel>,
     modifier: Modifier = Modifier,
-    onDeleteReceipt: (ReceiptModel) -> Unit
+    onDeleteReceipt: (ReceiptModel) -> Unit,
+    onClickReceiptDetails: (Int) -> Unit
 ) {
     LazyColumn {
         items(
@@ -24,7 +25,8 @@ internal fun ReceiptCardList(
                 amount = receipt.amount,
                 description = receipt.description,
                 dateCreated = DateFormat.getDateTimeInstance().format(receipt.dateCreated),
-                onClickDelete = { onDeleteReceipt(receipt) }
+                onClickDelete = { onDeleteReceipt(receipt) },
+                onClickReceiptDetails = { onClickReceiptDetails(receipt.id) }
             )
         }
     }

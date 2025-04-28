@@ -10,11 +10,13 @@ constructor(private val receiptDAO: ReceiptDAO) {
     fun getAll(): Flow<List<ReceiptModel>>
             = receiptDAO.getAll()
 
+    fun get(id: Int) = receiptDAO.get(id)
+
     suspend fun insert(receipt: ReceiptModel)
     { receiptDAO.insert(receipt) }
 
     suspend fun update(receipt: ReceiptModel)
-    { receiptDAO.update(receipt) }
+    { receiptDAO.update(receipt.id,receipt.description) }
 
     suspend fun delete(receipt: ReceiptModel)
     { receiptDAO.delete(receipt) }
