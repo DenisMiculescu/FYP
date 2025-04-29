@@ -21,6 +21,9 @@ class AuthRepository
     override val isUserAuthenticatedInFirebase : Boolean
         get() = firebaseAuth.currentUser != null
 
+    override val email: String?
+        get() = firebaseAuth.currentUser?.email
+
     override suspend fun authenticateUser(email: String, password: String): FirebaseSignInResponse {
         return try {
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
@@ -41,9 +44,6 @@ class AuthRepository
             Response.Failure(e)
         }
     }
-
-    override val email: String?
-        get() = firebaseAuth.currentUser?.email
 
     override suspend fun signOut() {
         firebaseAuth.signOut()

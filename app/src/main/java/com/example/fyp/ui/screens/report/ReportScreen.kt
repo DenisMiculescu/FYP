@@ -38,9 +38,9 @@ fun ReportScreen(modifier: Modifier = Modifier,
 
     Timber.i("RS : Receipts List = $receipts")
 
-    LaunchedEffect(Unit) {
-        reportViewModel.getReceipts()
-    }
+//    LaunchedEffect(Unit) {
+//        reportViewModel.getReceipts()
+//    }
 
     Column {
         Column(
@@ -54,8 +54,8 @@ fun ReportScreen(modifier: Modifier = Modifier,
 
             ReportText()
 
-            if(!isError)
-                ShowRefreshList(onClick = { reportViewModel.getReceipts() })
+//            if(!isError)
+//                ShowRefreshList(onClick = { reportViewModel.getReceipts() })
 
             if (receipts.isEmpty() && !isError)
                 Centre(Modifier.fillMaxSize()) {
@@ -75,7 +75,7 @@ fun ReportScreen(modifier: Modifier = Modifier,
                     onDeleteReceipt = { receipt: ReceiptModel ->
                         reportViewModel.deleteReceipt(receipt)
                     },
-                    onRefreshList = { reportViewModel.getReceipts() }
+//                    onRefreshList = { reportViewModel.getReceipts() }
                 )
             }
             if (isError) {

@@ -4,9 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fyp.data.ReceiptModel
-import com.example.fyp.data.api.RetrofitRepository
-import com.example.fyp.data.repository.RoomRepository
 import com.example.fyp.firebase.services.AuthService
+import com.example.fyp.firebase.services.FirestoreService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,9 +17,10 @@ import javax.inject.Inject
 @HiltViewModel
 class ReportViewModel @Inject
 constructor(
-    private val repository: RetrofitRepository,
+    private val repository: FirestoreService,
     private val authService: AuthService
 ) : ViewModel() {
+
     private val _receipts
             = MutableStateFlow<List<ReceiptModel>>(emptyList())
     val uiReceipts: StateFlow<List<ReceiptModel>>
@@ -29,13 +29,6 @@ constructor(
     var isLoading = mutableStateOf(false)
     var error = mutableStateOf(Exception())
 
-//    init {
-//        viewModelScope.launch {
-//            repository.getAll().collect { listOfReceipts ->
-//                _receipts.value = listOfReceipts
-//            }
-//        }
-//    }
 
     init { getReceipts() }
 
@@ -43,9 +36,11 @@ constructor(
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                _receipts.value = repository.getAll(authService.email!!)
-                isErr.value = false
-                isLoading.value = false
+                repository.getAll(authService.email!!).collect { items ->
+                    _receipts.value = items
+                    isErr.value = false
+                    isLoading.value = false
+                }
                 Timber.i("DVM RVM = : ${_receipts.value}")
             }
             catch(e:Exception) {
@@ -57,9 +52,10 @@ constructor(
         }
     }
 
+
     fun deleteReceipt(receipt: ReceiptModel) {
         viewModelScope.launch {
-            repository.delete(authService.email!!, receipt)
+            repository.delete(authService.email!!,receipt._id)
         }
     }
 }

@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
+import java.util.Date
 import javax.inject.Inject
 
 class FirestoreRepository
@@ -44,12 +45,12 @@ class FirestoreRepository
     override suspend fun update(email: String,
                                 receipt: Receipt)
     {
-//        val receiptWithModifiedDate =
-//            receipt.copy(dateModified = Date())
-//
-//        firestore.collection(RECEIPT_COLLECTION)
-//            .document(receipt._id)
-//            .set(receiptWithModifiedDate).await()
+        val receiptWithModifiedDate =
+            receipt.copy(dateModified = Date())
+
+        firestore.collection(RECEIPT_COLLECTION)
+            .document(receipt._id)
+            .set(receiptWithModifiedDate).await()
     }
 
     override suspend fun delete(email: String,

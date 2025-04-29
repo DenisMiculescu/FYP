@@ -40,19 +40,18 @@ fun AddReceiptButton(
 ) {
 
     val receipts = reportViewModel.uiReceipts.collectAsState().value
-    val isError = receiptViewModel.isErr.value
-    val error = receiptViewModel.error.value
-    val isLoading = receiptViewModel.isLoading.value
     val context = LocalContext.current
 
-    if(isLoading) ShowLoader("Trying to add Receipt...")
+    val isError = receiptViewModel.isErr.value
+    val error = receiptViewModel.error.value
+//    val isLoading = receiptViewModel.isLoading.value
+
+//    if(isLoading) ShowLoader("Trying to add Receipt...")
 
     Row {
         Button(
             onClick = {
                 receiptViewModel.insert(receipt)
-                Timber.i("Receipt info : $receipts")
-                Timber.i("Receipt List info : ${receipts.toList()}")
             },
             elevation = ButtonDefaults.buttonElevation(20.dp)
         ) {
@@ -83,10 +82,9 @@ fun AddReceiptButton(
             })
     }
 
-    Timber.i("DVM Button = : ${error.message}")
     if(isError)
         Toast.makeText(context,"Unable to add a Receipt at this Time...",
             Toast.LENGTH_SHORT).show()
-    else
-        reportViewModel.getReceipts()
+//    else
+//        reportViewModel.getReceipts()
 }

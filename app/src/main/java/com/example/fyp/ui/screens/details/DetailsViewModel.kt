@@ -5,18 +5,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fyp.data.ReceiptModel
-import com.example.fyp.data.api.RetrofitRepository
-import com.example.fyp.data.repository.RoomRepository
 import com.example.fyp.firebase.services.AuthService
+import com.example.fyp.firebase.services.FirestoreService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject
-constructor(private val repository: RetrofitRepository,
+constructor(private val repository: FirestoreService,
+            private val authService: AuthService,
             savedStateHandle: SavedStateHandle,
-            private val authService: AuthService
 ) : ViewModel() {
 
     var receipt = mutableStateOf(ReceiptModel())
@@ -29,7 +28,7 @@ constructor(private val repository: RetrofitRepository,
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                receipt.value = repository.get(authService.email!!, id)
+                receipt.value = repository.get(authService.email!!, id)!!
                 isErr.value = false
                 isLoading.value = false
             } catch (e: Exception) {

@@ -73,7 +73,6 @@ fun DetailsScreen(
         Timber.i("DetailsScreen: Error = $error")
     }
 
-
     if(!isError && !isLoading)
         Column(modifier = modifier.padding(
             start = 24.dp,

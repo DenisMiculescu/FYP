@@ -14,21 +14,22 @@ internal fun ReceiptCardList(
     modifier: Modifier = Modifier,
     onDeleteReceipt: (ReceiptModel) -> Unit,
     onClickReceiptDetails: (String) -> Unit,
-    onRefreshList: () -> Unit
+//    onRefreshList: () -> Unit
 ) {
     LazyColumn {
         items(
             items = receipts,
-            key = { receipt -> receipt.id }
+            key = { receipt -> receipt._id }
         ) { receipt ->
             ReceiptCard(
                 merchant = receipt.merchant,
                 amount = receipt.amount,
                 dateCreated = DateFormat.getDateTimeInstance().format(receipt.dateCreated),
+                dateModified = DateFormat.getDateTimeInstance().format(receipt.dateModified),
                 description = receipt.description,
                 onClickDelete = { onDeleteReceipt(receipt) },
-                onClickReceiptDetails = { onClickReceiptDetails(receipt.id) },
-                onRefreshList = onRefreshList
+                onClickReceiptDetails = { onClickReceiptDetails(receipt._id) },
+//                onRefreshList = onRefreshList
             )
         }
     }

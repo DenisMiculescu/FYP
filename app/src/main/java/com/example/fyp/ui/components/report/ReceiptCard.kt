@@ -26,10 +26,10 @@ fun ReceiptCard(
     merchant: String,
     amount: Float,
     dateCreated: String,
+    dateModified: String,
     description: String,
     onClickDelete: () -> Unit,
     onClickReceiptDetails: () -> Unit,
-    onRefreshList: () -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -41,10 +41,11 @@ fun ReceiptCard(
             merchant,
             amount,
             dateCreated,
+            dateModified,
             description,
             onClickDelete,
             onClickReceiptDetails,
-            onRefreshList
+//            onRefreshList
         )
     }
 }
@@ -54,10 +55,10 @@ private fun ReceiptCardContent(
     merchant: String,
     amount: Float,
     dateCreated: String,
+    dateModified: String,
     description: String,
     onClickDelete: () -> Unit,
     onClickReceiptDetails: () -> Unit,
-    onRefreshList: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
@@ -102,6 +103,10 @@ private fun ReceiptCardContent(
                 text = "Date Added: $dateCreated",
                 style = MaterialTheme.typography.labelSmall
             )
+            Text(
+                text = "Date Modified: $dateModified",
+                style = MaterialTheme.typography.labelSmall
+            )
 
             if (expanded) {
                 Text(
@@ -127,7 +132,7 @@ private fun ReceiptCardContent(
                         ShowDeleteAlert(
                             onDismiss = { showDeleteConfirmDialog = false },
                             onDelete = onClickDelete,
-                            onRefresh = onRefreshList
+//                            onRefresh = onRefreshList
                         )
                     }
                 }
@@ -151,7 +156,6 @@ private fun ReceiptCardContent(
 fun ShowDeleteAlert(
     onDismiss: () -> Unit,
     onDelete: () -> Unit,
-    onRefresh: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -161,7 +165,7 @@ fun ShowDeleteAlert(
             Button(
                 onClick = {
                     onDelete()
-                    onRefresh()
+//                    onRefresh()
                 }
             ) { Text("Yes") }
         },
