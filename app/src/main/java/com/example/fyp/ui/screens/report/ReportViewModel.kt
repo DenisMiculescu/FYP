@@ -29,9 +29,6 @@ constructor(
     var isLoading = mutableStateOf(false)
     var error = mutableStateOf(Exception())
 
-
-
-
 //    init {
 //        viewModelScope.launch {
 //            repository.getAll().collect { listOfReceipts ->
@@ -49,6 +46,7 @@ constructor(
                 _receipts.value = repository.getAll(authService.email!!)
                 isErr.value = false
                 isLoading.value = false
+                Timber.i("DVM RVM = : ${_receipts.value}")
             }
             catch(e:Exception) {
                 isErr.value = true
@@ -61,7 +59,7 @@ constructor(
 
     fun deleteReceipt(receipt: ReceiptModel) {
         viewModelScope.launch {
-            repository.delete(authService.email!!,receipt)
+            repository.delete(authService.email!!, receipt)
         }
     }
 }

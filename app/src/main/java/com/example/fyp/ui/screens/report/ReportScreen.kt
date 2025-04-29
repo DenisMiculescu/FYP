@@ -28,7 +28,7 @@ import timber.log.Timber
 @Composable
 fun ReportScreen(modifier: Modifier = Modifier,
                  reportViewModel: ReportViewModel = hiltViewModel(),
-                 onClickReceiptDetails: (Long) -> Unit,
+                 onClickReceiptDetails: (String) -> Unit,
                  ) {
 
     val receipts = reportViewModel.uiReceipts.collectAsState().value
@@ -72,8 +72,7 @@ fun ReportScreen(modifier: Modifier = Modifier,
                 ReceiptCardList(
                     receipts = receipts,
                     onClickReceiptDetails = onClickReceiptDetails,
-                    onDeleteReceipt = { receipt: ReceiptModel
-                        ->
+                    onDeleteReceipt = { receipt: ReceiptModel ->
                         reportViewModel.deleteReceipt(receipt)
                     },
                     onRefreshList = { reportViewModel.getReceipts() }

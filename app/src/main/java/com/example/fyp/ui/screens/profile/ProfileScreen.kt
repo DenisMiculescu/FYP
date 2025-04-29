@@ -38,7 +38,8 @@ fun ProfileScreen(
         Spacer(modifier = Modifier.height(10.dp))
         //   if(loginViewModel.currentUser?.photoUrl?.path.isNullOrEmpty())
         BasicContent(
-            displayName = profileViewModel.displayName
+            displayName = profileViewModel.displayName,
+            email = profileViewModel.email
         )
 //        else
 //            ProfileContent(

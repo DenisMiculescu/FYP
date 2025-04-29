@@ -26,6 +26,8 @@ fun ReceiptScreen(modifier: Modifier = Modifier,
     var merchant by remember { mutableStateOf("") }
     var amount by remember { mutableIntStateOf(10) }
     var description by remember { mutableStateOf("Go Homer!") }
+    var email by remember { mutableStateOf("") }
+
 
     Column {
         Column(
@@ -47,7 +49,7 @@ fun ReceiptScreen(modifier: Modifier = Modifier,
             }
             MerchantInput (
                 modifier = modifier,
-                onMessageChange = {merchant = it}
+                onMessageChange = { merchant = it}
             )
             DescriptionInput (
                 modifier = modifier,
@@ -56,11 +58,11 @@ fun ReceiptScreen(modifier: Modifier = Modifier,
             AddReceiptButton (
                 modifier = modifier,
                 receipt = ReceiptModel(
-                    id = Random.nextLong(1, 100000),
                     merchant = merchant,
                     amount = amount.toFloat(),
                     dateCreated = Date(),
                     description = description,
+                    email = email,
                     )
             )
         }

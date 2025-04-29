@@ -20,7 +20,7 @@ constructor(private val repository: RetrofitRepository,
 ) : ViewModel() {
 
     var receipt = mutableStateOf(ReceiptModel())
-    val id: Int = checkNotNull(savedStateHandle["id"])
+    val id: String = checkNotNull(savedStateHandle["id"])
     var isErr = mutableStateOf(false)
     var error = mutableStateOf(Exception())
     var isLoading = mutableStateOf(false)
@@ -29,7 +29,7 @@ constructor(private val repository: RetrofitRepository,
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                receipt.value = repository.get(authService.email!!, id.toString())[0]
+                receipt.value = repository.get(authService.email!!, id)
                 isErr.value = false
                 isLoading.value = false
             } catch (e: Exception) {

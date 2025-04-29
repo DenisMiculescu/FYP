@@ -19,11 +19,11 @@ interface ReceiptService {
 
     @GET(ServiceEndPoints.RECEIPTS_ENDPOINT + "/{email}" + "/{id}")
     suspend fun get(@Path("email") email: String,
-                    @Path("id") id: String): Response<List<ReceiptModel>>
+                    @Path("id") id: String): Response<ReceiptModel>
 
     @DELETE(ServiceEndPoints.RECEIPTS_ENDPOINT + "/{email}" + "/{id}")
     suspend fun delete(@Path("email") email: String,
-                       @Path("id") id: String): Response<Unit>
+                       @Path("id") id: String): Response<Void>
 
     @POST(ServiceEndPoints.RECEIPTS_ENDPOINT + "/{email}")
     suspend fun post(@Path("email") email: String,

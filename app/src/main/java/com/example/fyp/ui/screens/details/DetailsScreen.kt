@@ -1,6 +1,7 @@
 package com.example.fyp.ui.screens.details
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,12 +30,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fyp.ui.components.details.DetailsScreenText
 import com.example.fyp.ui.components.details.ReadOnlyTextField
+import com.example.fyp.ui.components.general.ShowLoader
+import timber.log.Timber
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -50,16 +54,31 @@ fun DetailsScreen(
     var isEmptyError by rememberSaveable { mutableStateOf(false) }
     var isShortError by rememberSaveable { mutableStateOf(false) }
 
+    val context = LocalContext.current
+    val isError = detailViewModel.isErr.value
+    val error = detailViewModel.error.value
+    val isLoading = detailViewModel.isLoading.value
+
+    if(isLoading) ShowLoader("Retrieving Receipt Details...")
+
     fun validate(text: String) {
         isEmptyError = text.isEmpty()
         isShortError = text.length < 2
         onMessageChanged = !(isEmptyError || isShortError)
     }
 
-    Column(modifier = modifier.padding(
-        start = 24.dp,
-        end = 24.dp,
-    ),
+    if(isError) {
+        Toast.makeText(context,"Unable to fetch Receipt at this Time...",
+            Toast.LENGTH_SHORT).show()
+        Timber.i("DetailsScreen: Error = $error")
+    }
+
+
+    if(!isError && !isLoading)
+        Column(modifier = modifier.padding(
+            start = 24.dp,
+            end = 24.dp,
+        ),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         DetailsScreenText()

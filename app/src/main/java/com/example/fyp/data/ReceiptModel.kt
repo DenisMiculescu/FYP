@@ -1,23 +1,32 @@
 package com.example.fyp.data
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.util.Date
+import java.util.UUID
 
 @Entity
 data class ReceiptModel(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    val _id: String = "N/A",
+
+    @PrimaryKey
+    var id: String = UUID.randomUUID().toString(),
+
+    @Ignore
+    @SerializedName("_id")
+    var _id: String = UUID.randomUUID().toString(),
+
     @SerializedName("merchant")
-    val merchant: String = "N/A",
+    var merchant: String = "N/A",
+
     @SerializedName("amount")
-    val amount: Float = 0.00F,
+    var amount: Float = 0.00F,
+
     @SerializedName("datecreated")
-    val dateCreated: Date = Date(),
+    var dateCreated: Date = Date(),
+
     var description: String = "MESSAGE!",
+
     var email: String = "joe@bloggs.com"
-
 )
-

@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.fyp.data.ReceiptModel
+import java.text.DateFormat
 
 
 @Composable
@@ -12,7 +13,7 @@ internal fun ReceiptCardList(
     receipts: List<ReceiptModel>,
     modifier: Modifier = Modifier,
     onDeleteReceipt: (ReceiptModel) -> Unit,
-    onClickReceiptDetails: (Long) -> Unit,
+    onClickReceiptDetails: (String) -> Unit,
     onRefreshList: () -> Unit
 ) {
     LazyColumn {
@@ -21,7 +22,10 @@ internal fun ReceiptCardList(
             key = { receipt -> receipt.id }
         ) { receipt ->
             ReceiptCard(
-                receipt = receipt,
+                merchant = receipt.merchant,
+                amount = receipt.amount,
+                dateCreated = DateFormat.getDateTimeInstance().format(receipt.dateCreated),
+                description = receipt.description,
                 onClickDelete = { onDeleteReceipt(receipt) },
                 onClickReceiptDetails = { onClickReceiptDetails(receipt.id) },
                 onRefreshList = onRefreshList

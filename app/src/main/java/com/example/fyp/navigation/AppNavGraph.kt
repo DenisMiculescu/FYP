@@ -33,10 +33,15 @@ fun NavHostProvider(
             ReceiptScreen(modifier = modifier)
         }
 
+        composable(route = Home.route) {
+            //call our 'Home' Screen Here
+            HomeScreen(modifier = modifier)
+        }
+
         composable(route = Report.route) {
             ReportScreen(modifier = modifier,
                 onClickReceiptDetails = {
-                        receiptId : Long ->
+                    receiptId : String ->
                     navController.navigateToReceiptDetails(receiptId)
                 },
             )
@@ -51,15 +56,10 @@ fun NavHostProvider(
             arguments = Details.arguments
         )
         { navBackStackEntry ->
-            val id = navBackStackEntry.arguments?.getLong(Details.idArg)
+            val id = navBackStackEntry.arguments?.getString(Details.idArg)
             if (id != null) {
                 DetailsScreen()
             }
-        }
-
-        composable(route = Home.route) {
-            //call our 'Home' Screen Here
-            HomeScreen(modifier = modifier)
         }
 
         composable(route = Login.route) {
@@ -92,6 +92,6 @@ fun NavHostProvider(
     }
 }
 
-private fun NavHostController.navigateToReceiptDetails(receiptId: Long) {
+private fun NavHostController.navigateToReceiptDetails(receiptId: String) {
     this.navigate("details/$receiptId")
 }

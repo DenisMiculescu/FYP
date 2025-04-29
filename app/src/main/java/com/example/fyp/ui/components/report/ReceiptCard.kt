@@ -23,9 +23,12 @@ import java.text.DateFormat
 
 @Composable
 fun ReceiptCard(
-    receipt: ReceiptModel,
-    onClickDelete: (ReceiptModel) -> Unit,
-    onClickReceiptDetails: (Long) -> Unit,
+    merchant: String,
+    amount: Float,
+    dateCreated: String,
+    description: String,
+    onClickDelete: () -> Unit,
+    onClickReceiptDetails: () -> Unit,
     onRefreshList: () -> Unit
 ) {
     Card(
@@ -35,19 +38,25 @@ fun ReceiptCard(
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 2.dp)
     ) {
         ReceiptCardContent(
-            receipt = receipt,
-            onClickDelete = onClickDelete,
-            onClickReceiptDetails = onClickReceiptDetails,
-            onRefreshList = onRefreshList
+            merchant,
+            amount,
+            dateCreated,
+            description,
+            onClickDelete,
+            onClickReceiptDetails,
+            onRefreshList
         )
     }
 }
 
 @Composable
 private fun ReceiptCardContent(
-    receipt: ReceiptModel,
-    onClickDelete: (ReceiptModel) -> Unit,
-    onClickReceiptDetails: (Long) -> Unit,
+    merchant: String,
+    amount: Float,
+    dateCreated: String,
+    description: String,
+    onClickDelete: () -> Unit,
+    onClickReceiptDetails: () -> Unit,
     onRefreshList: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -75,14 +84,14 @@ private fun ReceiptCardContent(
                     modifier = Modifier.padding(end = 8.dp)
                 )
                 Text(
-                    text = receipt.merchant,
+                    text = merchant,
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.ExtraBold
                     )
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = "€${receipt.amount}",
+                    text = "€$amount",
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.ExtraBold
                     )
@@ -90,26 +99,25 @@ private fun ReceiptCardContent(
             }
 
             Text(
-                text = "Date: ${DateFormat.getDateTimeInstance().format(receipt.dateCreated)}",
+                text = "Date Added: $dateCreated",
                 style = MaterialTheme.typography.labelSmall
             )
 
             if (expanded) {
                 Text(
                     modifier = Modifier.padding(vertical = 16.dp),
-                    text = receipt.description
+                    text = description
                 )
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    FilledTonalButton(onClick = { onClickReceiptDetails(receipt.id) }) {
+                    FilledTonalButton(onClick = onClickReceiptDetails) {
                         Text(text = "Show More...")
                     }
 
                     FilledTonalIconButton(onClick = {
-                        Timber.d("DeleteRequest", "Attempting to delete: email=${receipt.email}, id=${receipt.id}")
                         showDeleteConfirmDialog = true
                     }) {
                         Icon(Icons.Filled.Delete, contentDescription = "Delete Receipt")
@@ -119,8 +127,7 @@ private fun ReceiptCardContent(
                         ShowDeleteAlert(
                             onDismiss = { showDeleteConfirmDialog = false },
                             onDelete = onClickDelete,
-                            onRefresh = onRefreshList,
-                            receipt = receipt
+                            onRefresh = onRefreshList
                         )
                     }
                 }
@@ -143,9 +150,8 @@ private fun ReceiptCardContent(
 @Composable
 fun ShowDeleteAlert(
     onDismiss: () -> Unit,
-    onDelete: (ReceiptModel) -> Unit,
+    onDelete: () -> Unit,
     onRefresh: () -> Unit,
-    receipt: ReceiptModel
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -154,7 +160,7 @@ fun ShowDeleteAlert(
         confirmButton = {
             Button(
                 onClick = {
-                    onDelete(receipt)
+                    onDelete()
                     onRefresh()
                 }
             ) { Text("Yes") }
