@@ -3,47 +3,30 @@ package com.example.fyp.ui.components.report
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Business
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.FilledTonalIconButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.fyp.R
+import com.example.fyp.data.ReceiptModel
+import timber.log.Timber
+import java.text.DateFormat
 
 @Composable
 fun ReceiptCard(
-    merchant: String,
-    amount: Float,
-    dateCreated: String,
-    description: String,
-    onClickDelete: () -> Unit,
-    onClickReceiptDetails: () -> Unit
+    receipt: ReceiptModel,
+    onClickDelete: (ReceiptModel) -> Unit,
+    onClickReceiptDetails: (Long) -> Unit,
+    onRefreshList: () -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -52,28 +35,23 @@ fun ReceiptCard(
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 2.dp)
     ) {
         ReceiptCardContent(
-            merchant,
-            amount,
-            dateCreated,
-            description,
-            onClickDelete,
-            onClickReceiptDetails
+            receipt = receipt,
+            onClickDelete = onClickDelete,
+            onClickReceiptDetails = onClickReceiptDetails,
+            onRefreshList = onRefreshList
         )
     }
 }
 
 @Composable
 private fun ReceiptCardContent(
-    merchant: String,
-    amount: Float,
-    dateCreated: String,
-    description: String,
-    onClickDelete: () -> Unit,
-    onClickReceiptDetails: () -> Unit
+    receipt: ReceiptModel,
+    onClickDelete: (ReceiptModel) -> Unit,
+    onClickReceiptDetails: (Long) -> Unit,
+    onRefreshList: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
-
 
     Row(
         modifier = Modifier
@@ -93,48 +71,62 @@ private fun ReceiptCardContent(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Filled.Business,
-                    "Donation Status",
-                    Modifier.padding(end = 8.dp)
+                    contentDescription = "Merchant Icon",
+                    modifier = Modifier.padding(end = 8.dp)
                 )
                 Text(
-                    text = merchant,
+                    text = receipt.merchant,
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.ExtraBold
                     )
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = "€$amount",
+                    text = "€${receipt.amount}",
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.ExtraBold
                     )
                 )
             }
-            Text(
-                text = "Date: $dateCreated", style = MaterialTheme.typography.labelSmall
-            )
-            if (expanded) {
-                Text(modifier = Modifier.padding(vertical = 16.dp), text = description)
-                Row(modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween) {
 
-                    FilledTonalButton(onClick = onClickReceiptDetails) {
+            Text(
+                text = "Date: ${DateFormat.getDateTimeInstance().format(receipt.dateCreated)}",
+                style = MaterialTheme.typography.labelSmall
+            )
+
+            if (expanded) {
+                Text(
+                    modifier = Modifier.padding(vertical = 16.dp),
+                    text = receipt.description
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    FilledTonalButton(onClick = { onClickReceiptDetails(receipt.id) }) {
                         Text(text = "Show More...")
                     }
 
-                    FilledTonalIconButton(onClick = {showDeleteConfirmDialog = true}) {
-                        Icon(Icons.Filled.Delete, "Delete Receipt")
-                    }
-                    if (showDeleteConfirmDialog) {
-                        showDeleteAlert(
-                            onDismiss = { showDeleteConfirmDialog = false },
-                            onDelete = onClickDelete
-                        )
+                    FilledTonalIconButton(onClick = {
+                        Timber.d("DeleteRequest", "Attempting to delete: email=${receipt.email}, id=${receipt.id}")
+                        showDeleteConfirmDialog = true
+                    }) {
+                        Icon(Icons.Filled.Delete, contentDescription = "Delete Receipt")
                     }
 
+                    if (showDeleteConfirmDialog) {
+                        ShowDeleteAlert(
+                            onDismiss = { showDeleteConfirmDialog = false },
+                            onDelete = onClickDelete,
+                            onRefresh = onRefreshList,
+                            receipt = receipt
+                        )
+                    }
                 }
             }
         }
+
         IconButton(onClick = { expanded = !expanded }) {
             Icon(
                 imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
@@ -149,16 +141,22 @@ private fun ReceiptCardContent(
 }
 
 @Composable
-fun showDeleteAlert(
+fun ShowDeleteAlert(
     onDismiss: () -> Unit,
-    onDelete: () -> Unit) {
+    onDelete: (ReceiptModel) -> Unit,
+    onRefresh: () -> Unit,
+    receipt: ReceiptModel
+) {
     AlertDialog(
-        onDismissRequest = onDismiss ,
+        onDismissRequest = onDismiss,
         title = { Text(stringResource(id = R.string.confirm_delete)) },
         text = { Text(stringResource(id = R.string.confirm_delete_message)) },
         confirmButton = {
             Button(
-                onClick = { onDelete() }
+                onClick = {
+                    onDelete(receipt)
+                    onRefresh()
+                }
             ) { Text("Yes") }
         },
         dismissButton = {
@@ -166,4 +164,3 @@ fun showDeleteAlert(
         }
     )
 }
-

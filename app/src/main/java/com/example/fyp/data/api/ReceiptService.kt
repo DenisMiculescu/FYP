@@ -10,20 +10,29 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ReceiptService {
-    @GET(ServiceEndPoints.RECEIPTS_ENDPOINT)
-    suspend fun getall(): Response<List<ReceiptModel>>
 
-    @GET(ServiceEndPoints.RECEIPTS_ENDPOINT + "/{id}")
-    suspend fun get(@Path("id") id: String): Response<List<ReceiptModel>>
 
-    @DELETE(ServiceEndPoints.RECEIPTS_ENDPOINT + "/{id}")
-    suspend fun delete(@Path("id") id: String): ReceiptWrapper
+    @GET(ServiceEndPoints.RECEIPTS_ENDPOINT + "/{email}")
+    suspend fun getall(
+        @Path("email") email: String)
+            : Response<List<ReceiptModel>>
 
-    @POST(ServiceEndPoints.RECEIPTS_ENDPOINT)
-    suspend fun post(@Body receipt: ReceiptModel): ReceiptWrapper
+    @GET(ServiceEndPoints.RECEIPTS_ENDPOINT + "/{email}" + "/{id}")
+    suspend fun get(@Path("email") email: String,
+                    @Path("id") id: String): Response<List<ReceiptModel>>
 
-    @PUT(ServiceEndPoints.RECEIPTS_ENDPOINT + "/{id}")
-    suspend fun put(@Path("id") id: String,
+    @DELETE(ServiceEndPoints.RECEIPTS_ENDPOINT + "/{email}" + "/{id}")
+    suspend fun delete(@Path("email") email: String,
+                       @Path("id") id: String): Response<Unit>
+
+    @POST(ServiceEndPoints.RECEIPTS_ENDPOINT + "/{email}")
+    suspend fun post(@Path("email") email: String,
+                     @Body receipt: ReceiptModel): ReceiptWrapper
+
+    @PUT(ServiceEndPoints.RECEIPTS_ENDPOINT + "/{email}" + "/{id}")
+    suspend fun put(@Path("email") email: String,
+                    @Path("id") id: String,
                     @Body receipt: ReceiptModel
     ): ReceiptWrapper
 }
+

@@ -1,5 +1,6 @@
-package com.example.fyp.components.receipt
+package com.example.fyp.ui.components.receipt
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -23,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fyp.R
 import com.example.fyp.data.ReceiptModel
+import com.example.fyp.ui.components.general.ShowLoader
 import com.example.fyp.ui.screens.receipt.ReceiptViewModel
 import com.example.fyp.ui.screens.report.ReportViewModel
 import timber.log.Timber
@@ -37,6 +40,12 @@ fun AddReceiptButton(
 ) {
 
     val receipts = reportViewModel.uiReceipts.collectAsState().value
+    val isError = receiptViewModel.isErr.value
+    val error = receiptViewModel.error.value
+    val isLoading = receiptViewModel.isLoading.value
+    val context = LocalContext.current
+
+    if(isLoading) ShowLoader("Trying to add Receipt...")
 
     Row {
         Button(
@@ -73,4 +82,11 @@ fun AddReceiptButton(
 
             })
     }
+
+    Timber.i("DVM Button = : ${error.message}")
+    if(isError)
+        Toast.makeText(context,"Unable to add a Receipt at this Time...",
+            Toast.LENGTH_SHORT).show()
+    else
+        reportViewModel.getReceipts()
 }

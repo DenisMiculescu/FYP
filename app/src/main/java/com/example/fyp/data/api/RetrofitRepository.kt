@@ -8,43 +8,42 @@ import javax.inject.Inject
 class RetrofitRepository @Inject
 constructor(private val serviceApi: ReceiptService)  {
 
-    suspend fun getAll(): List<ReceiptModel>
+    suspend fun getAll(email: String): List<ReceiptModel>
     {
         return withContext(Dispatchers.IO) {
-            val receipts = serviceApi.getall()
+            val receipts = serviceApi.getall(email)
             receipts.body() ?: emptyList()
         }
     }
 
-    suspend fun get(id: String): List<ReceiptModel>
+    suspend fun get(email: String, id: String): List<ReceiptModel>
     {
         return withContext(Dispatchers.IO) {
-            val receipt = serviceApi.get(id)
+            val receipt = serviceApi.get(email, id)
             receipt.body() ?: emptyList()
         }
     }
 
-    suspend fun insert(receipt: ReceiptModel) : ReceiptWrapper
+    suspend fun insert(email: String, receipt: ReceiptModel) : ReceiptWrapper
     {
         return withContext(Dispatchers.IO) {
-            val wrapper = serviceApi.post(receipt)
+            val wrapper = serviceApi.post(email, receipt)
             wrapper
         }
     }
 
-    suspend fun update(receipt: ReceiptModel) : ReceiptWrapper
+    suspend fun update(email: String, receipt: ReceiptModel) : ReceiptWrapper
     {
         return withContext(Dispatchers.IO) {
-            val wrapper = serviceApi.put(receipt._id,receipt)
+            val wrapper = serviceApi.put(email, receipt.id.toString(),receipt)
             wrapper
         }
     }
 
-    suspend fun delete(receipt: ReceiptModel) : ReceiptWrapper
-    {
+    suspend fun delete(email: String, receipt: ReceiptModel): Boolean {
         return withContext(Dispatchers.IO) {
-            val wrapper = serviceApi.delete(receipt._id)
-            wrapper
+            val response = serviceApi.delete(email.lowercase(), receipt.id.toString())
+            response.isSuccessful
         }
     }
 }

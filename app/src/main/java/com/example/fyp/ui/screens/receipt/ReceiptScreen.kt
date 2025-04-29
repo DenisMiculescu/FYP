@@ -6,7 +6,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.fyp.components.receipt.AddReceiptButton
+import com.example.fyp.ui.components.receipt.AddReceiptButton
 import com.example.fyp.components.receipt.WelcomeText
 import com.example.fyp.components.receipt.AmountPicker
 import com.example.fyp.components.receipt.DescriptionInput
@@ -56,7 +56,7 @@ fun ReceiptScreen(modifier: Modifier = Modifier,
             AddReceiptButton (
                 modifier = modifier,
                 receipt = ReceiptModel(
-                    id = Random.nextInt(1, 100000),
+                    id = Random.nextLong(1, 100000),
                     merchant = merchant,
                     amount = amount.toFloat(),
                     dateCreated = Date(),

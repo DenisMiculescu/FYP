@@ -8,7 +8,7 @@ import java.util.Date
 @Entity
 data class ReceiptModel(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Long = 0,
     val _id: String = "N/A",
     @SerializedName("merchant")
     val merchant: String = "N/A",
@@ -16,6 +16,8 @@ data class ReceiptModel(
     val amount: Float = 0.00F,
     @SerializedName("datecreated")
     val dateCreated: Date = Date(),
-    var description: String = "MESSAGE!"
+    var description: String = "MESSAGE!",
+    var email: String = "joe@bloggs.com"
+
 )
 

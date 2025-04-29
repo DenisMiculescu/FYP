@@ -36,7 +36,7 @@ fun NavHostProvider(
         composable(route = Report.route) {
             ReportScreen(modifier = modifier,
                 onClickReceiptDetails = {
-                        receiptId : Int ->
+                        receiptId : Long ->
                     navController.navigateToReceiptDetails(receiptId)
                 },
             )
@@ -51,7 +51,7 @@ fun NavHostProvider(
             arguments = Details.arguments
         )
         { navBackStackEntry ->
-            val id = navBackStackEntry.arguments?.getInt(Details.idArg)
+            val id = navBackStackEntry.arguments?.getLong(Details.idArg)
             if (id != null) {
                 DetailsScreen()
             }
@@ -92,6 +92,6 @@ fun NavHostProvider(
     }
 }
 
-private fun NavHostController.navigateToReceiptDetails(receiptId: Int) {
+private fun NavHostController.navigateToReceiptDetails(receiptId: Long) {
     this.navigate("details/$receiptId")
 }

@@ -1,6 +1,5 @@
 package com.example.fyp.firebase.auth
 
-
 import com.example.fyp.firebase.services.AuthService
 import com.example.fyp.firebase.services.FirebaseSignInResponse
 import com.google.firebase.auth.FirebaseAuth
@@ -42,6 +41,9 @@ class AuthRepository
             Response.Failure(e)
         }
     }
+
+    override val email: String?
+        get() = firebaseAuth.currentUser?.email
 
     override suspend fun signOut() {
         firebaseAuth.signOut()
