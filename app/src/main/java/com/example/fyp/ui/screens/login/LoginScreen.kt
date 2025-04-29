@@ -31,6 +31,7 @@ import com.example.fyp.firebase.auth.Response
 import com.example.fyp.navigation.Home
 import com.example.fyp.navigation.Login
 import com.example.fyp.ui.components.general.ButtonComponent
+import com.example.fyp.ui.components.general.GoogleSignInButtonComponent
 import com.example.fyp.ui.components.general.HeadingLogoComponent
 import com.example.fyp.ui.components.general.HeadingTextComponent
 import com.example.fyp.ui.components.general.MyTextFieldComponent
@@ -98,6 +99,13 @@ fun LoginScreen(
                     isEnabled = loginViewModel.allValidationsPassed.value
                 )
                 isEnabled = loginViewModel.allValidationsPassed.value
+
+                // Google Button here
+                Spacer(modifier = Modifier.height(10.dp))
+                val context = LocalContext.current
+                GoogleSignInButtonComponent {
+                    loginViewModel.signInWithGoogleCredentials(context)
+                }
             }
         }
     }

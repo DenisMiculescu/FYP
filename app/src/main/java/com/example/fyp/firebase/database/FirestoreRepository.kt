@@ -18,21 +18,20 @@ class FirestoreRepository
                     private val firestore: FirebaseFirestore
 ) : FirestoreService {
 
-    override suspend fun getAll(email: String): Receipts {
-
+    override suspend fun getAll(email: String): Receipts
+    {
         return firestore.collection(RECEIPT_COLLECTION)
             .whereEqualTo(USER_EMAIL, email)
             .dataObjects()
     }
 
-    override suspend fun get(email: String,
-                             receiptId: String): Receipt? {
+    override suspend fun get(email: String, receiptId: String): Receipt?
+    {
         return firestore.collection(RECEIPT_COLLECTION)
             .document(receiptId).get().await().toObject()
     }
 
-    override suspend fun insert(email: String,
-                                receipt: Receipt)
+    override suspend fun insert(email: String, receipt: Receipt)
     {
         val receiptWithEmail = receipt.copy(email = email)
 

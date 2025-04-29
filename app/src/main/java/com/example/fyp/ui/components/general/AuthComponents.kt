@@ -46,9 +46,65 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fyp.R
+import com.example.fyp.data.rules.Constants.SIGN_IN_WITH_GOOGLE
 import com.example.fyp.ui.theme.endGradientColor
+import com.example.fyp.ui.theme.gEndGradientColor
+import com.example.fyp.ui.theme.gStartGradientColor
 import com.example.fyp.ui.theme.startGradientColor
 
+
+@Composable
+fun GoogleSignInButtonComponent(onButtonClicked: () -> Unit) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(48.dp),
+        onClick = {
+            onButtonClicked.invoke()
+        },
+        contentPadding = PaddingValues(),
+        colors = ButtonDefaults.buttonColors(Color.Transparent),
+        shape = RoundedCornerShape(50.dp),
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(48.dp)
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            gStartGradientColor,
+                            gEndGradientColor,
+                        )
+                    ),
+                    shape = RoundedCornerShape(50.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Row {
+                Column {
+
+                    Image(
+                        modifier = Modifier.padding(end = 40.dp),
+                        painter = painterResource(
+                            id = R.drawable.ic_google_logo
+                        ),
+                        contentDescription = null
+                    )
+                }
+                Text(
+                    text = SIGN_IN_WITH_GOOGLE,
+                    fontSize = 18.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Italic,
+                    modifier = Modifier.padding(end = 40.dp)
+                )
+            }
+        }
+
+    }
+}
 
 @Composable
 fun NormalTextComponent(value: String) {
@@ -94,12 +150,10 @@ fun HeadingLogoComponent() {
                 .fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.login_homer),
+                painter = painterResource(id = R.drawable.receipt_pic),
                 contentDescription = "rose image",
                 modifier = Modifier
-                    .size(180.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
+                    .size(160.dp)
             )
         }
     }
