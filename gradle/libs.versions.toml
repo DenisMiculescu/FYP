@@ -31,6 +31,7 @@ lifecycleCompiler = "2.8.7"
 googleGmsGoogleServices = "4.4.2"
 firebaseAuth = "23.2.0"
 playServicesAuth = "21.3.0"
+firebaseFirestore = "25.1.4"
 
 
 [libraries]
@@ -82,6 +83,7 @@ play-services-auth = { module = "com.google.android.gms:play-services-auth", ver
 
 #Firebase
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
 
 [plugins]

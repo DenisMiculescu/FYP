@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.androidx.room.common.jvm)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.androidx.lifecycle.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -105,5 +106,6 @@ dependencies {
 
     //Firebase
     implementation(libs.firebase.auth)
-
+    implementation(libs.firebase.firestore)
+    
 }
