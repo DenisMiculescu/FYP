@@ -108,6 +108,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.googleid)
+    implementation(libs.firebase.storage)
 
     //Coil
     implementation(libs.coil.compose)

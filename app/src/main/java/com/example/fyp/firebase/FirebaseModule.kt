@@ -9,12 +9,16 @@ import com.example.fyp.firebase.auth.AuthRepository
 import com.example.fyp.firebase.database.FirestoreRepository
 import com.example.fyp.firebase.services.AuthService
 import com.example.fyp.firebase.services.FirestoreService
+import com.example.fyp.firebase.services.StorageService
+import com.example.fyp.firebase.storage.StorageRepository
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.storage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,8 +33,12 @@ object FirebaseModule {
     fun provideFirebaseAuth(): FirebaseAuth = Firebase.auth
 
     @Provides
-    fun provideAuthRepository(auth: FirebaseAuth):
-            AuthService = AuthRepository(firebaseAuth = auth)
+    fun provideAuthRepository(
+        auth: FirebaseAuth,
+        storage: StorageService
+    ): AuthService = AuthRepository(
+        firebaseAuth = auth,
+        storageService = storage)
 
     @Provides
     fun provideFirebaseFirestore()
@@ -65,5 +73,14 @@ object FirebaseModule {
     ) = GetCredentialRequest.Builder()
         .addCredentialOption(googleIdOption)
         .build()
+
+    @Provides
+    fun provideFirebaseStorage() : FirebaseStorage = Firebase.storage
+
+    @Provides
+    fun provideStorageRepository(
+        firebaseStorage: FirebaseStorage
+    ) : StorageService = StorageRepository(
+        storage = firebaseStorage)
 
 }
