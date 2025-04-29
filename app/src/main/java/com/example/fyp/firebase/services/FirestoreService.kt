@@ -1,5 +1,6 @@
 package com.example.fyp.firebase.services
 
+import android.net.Uri
 import com.example.fyp.data.ReceiptModel
 import kotlinx.coroutines.flow.Flow
 
@@ -13,4 +14,8 @@ interface FirestoreService {
     suspend fun insert(email: String, receipt: Receipt)
     suspend fun update(email: String, receipt: Receipt)
     suspend fun delete(email: String, receiptId: String)
+
+    suspend fun updatePhotoUris(email: String, uri: Uri)
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.fyp.firebase.database
 
+import android.net.Uri
 import com.example.fyp.data.rules.Constants.RECEIPT_COLLECTION
 import com.example.fyp.data.rules.Constants.USER_EMAIL
 import com.example.fyp.firebase.services.AuthService
@@ -10,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import java.util.Date
 import javax.inject.Inject
 
@@ -31,15 +33,18 @@ class FirestoreRepository
             .document(receiptId).get().await().toObject()
     }
 
-    override suspend fun insert(email: String, receipt: Receipt)
-    {
-        val receiptWithEmail = receipt.copy(email = email)
+    override suspend fun insert(email: String, receipt: Receipt) {
+        val receiptWithEmailAndImage =
+            receipt.copy(
+                email = email,
+                imageUri = auth.customPhotoUri!!.toString()
+            )
 
         firestore.collection(RECEIPT_COLLECTION)
-            .add(receiptWithEmail)
+            .add(receiptWithEmailAndImage)
             .await()
-
     }
+
 
     override suspend fun update(email: String,
                                 receipt: Receipt)
@@ -59,4 +64,23 @@ class FirestoreRepository
             .document(receiptId)
             .delete().await()
     }
+
+    override suspend fun updatePhotoUris(email: String, uri: Uri) {
+
+        firestore.collection(RECEIPT_COLLECTION)
+            .whereEqualTo(USER_EMAIL, email)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    Timber.i("FSR Updating ID: ${document.id}")
+                    firestore.collection(RECEIPT_COLLECTION)
+                        .document(document.id)
+                        .update("imageUri", uri.toString())
+                }
+            }
+            .addOnFailureListener { exception ->
+                Timber.i("Error $exception")
+            }
+    }
+
 }

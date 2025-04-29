@@ -1,9 +1,11 @@
 package com.example.fyp.ui.components.report
 
+import android.net.Uri
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Business
 import androidx.compose.material.icons.filled.Delete
@@ -13,13 +15,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.fyp.R
-import com.example.fyp.data.ReceiptModel
-import timber.log.Timber
-import java.text.DateFormat
 
 @Composable
 fun ReceiptCard(
@@ -28,6 +32,7 @@ fun ReceiptCard(
     dateCreated: String,
     dateModified: String,
     description: String,
+    photoUri: Uri,
     onClickDelete: () -> Unit,
     onClickReceiptDetails: () -> Unit,
 ) {
@@ -43,6 +48,7 @@ fun ReceiptCard(
             dateCreated,
             dateModified,
             description,
+            photoUri,
             onClickDelete,
             onClickReceiptDetails,
 //            onRefreshList
@@ -57,6 +63,7 @@ private fun ReceiptCardContent(
     dateCreated: String,
     dateModified: String,
     description: String,
+    photoUri: Uri,
     onClickDelete: () -> Unit,
     onClickReceiptDetails: () -> Unit,
 ) {
@@ -79,10 +86,16 @@ private fun ReceiptCardContent(
                 .padding(4.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Filled.Business,
-                    contentDescription = "Merchant Icon",
-                    modifier = Modifier.padding(end = 8.dp)
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(photoUri)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(CircleShape)
                 )
                 Text(
                     text = merchant,

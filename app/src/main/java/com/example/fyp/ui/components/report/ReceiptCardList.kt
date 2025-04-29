@@ -1,5 +1,6 @@
 package com.example.fyp.ui.components.report
 
+import android.net.Uri
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ internal fun ReceiptCardList(
                 dateCreated = DateFormat.getDateTimeInstance().format(receipt.dateCreated),
                 dateModified = DateFormat.getDateTimeInstance().format(receipt.dateModified),
                 description = receipt.description,
+                photoUri = Uri.parse(receipt.imageUri),
                 onClickDelete = { onDeleteReceipt(receipt) },
                 onClickReceiptDetails = { onClickReceiptDetails(receipt._id) },
 //                onRefreshList = onRefreshList
