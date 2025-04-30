@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -38,7 +39,6 @@ fun HomeScreen(
     val currentDestination = currentNavBackStackEntry?.destination
     val currentBottomScreen =
         allDestinations.find { it.route == currentDestination?.route } ?: Login
-    var startScreen = currentBottomScreen
 
     val currentUser = homeViewModel.currentUser
     val isActiveSession = homeViewModel.isAuthenticated()
@@ -49,7 +49,9 @@ fun HomeScreen(
         userSignedOutDestinations
     else bottomAppBarDestinations
 
-    if (isActiveSession) startScreen = Report
+    val startScreen = remember(isActiveSession) {
+        if (isActiveSession) Report else Login
+    }
 
     val locationPermissions = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -57,42 +59,39 @@ fun HomeScreen(
             Manifest.permission.ACCESS_FINE_LOCATION
         )
     )
-    if (isActiveSession) {
-        startScreen = Report
-        LaunchedEffect(locationPermissions.allPermissionsGranted) {
-            locationPermissions.launchMultiplePermissionRequest()
-            if (locationPermissions.allPermissionsGranted) {
-                mapViewModel.getLocationUpdates()
-            }
-        }
 
-        Scaffold(
-            modifier = modifier,
-            topBar = {
-                TopAppBarProvider(
-                    navController = navController,
-                    currentScreen = currentBottomScreen,
-                    canNavigateBack = navController.previousBackStackEntry != null,
-                    email = userEmail ?: "",
-                    name = userName ?: ""
-                ) { navController.navigateUp() }
-            },
-            content = { paddingValues ->
-                NavHostProvider(
-                    modifier = modifier,
-                    navController = navController,
-                    startDestination = startScreen,
-                    paddingValues = paddingValues,
-                    permissions = locationPermissions.allPermissionsGranted
-                )
-            },
-            bottomBar = {
-                BottomAppBarProvider(
-                    navController,
-                    currentScreen = currentBottomScreen,
-                    userDestinations
-                )
-            }
-        )
+    LaunchedEffect(isActiveSession) {
+        if (isActiveSession && locationPermissions.allPermissionsGranted) {
+            mapViewModel.getLocationUpdates()
+        }
     }
+
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBarProvider(
+                navController = navController,
+                currentScreen = currentBottomScreen,
+                canNavigateBack = navController.previousBackStackEntry != null,
+                email = userEmail ?: "",
+                name = userName ?: ""
+            ) { navController.navigateUp() }
+        },
+        content = { paddingValues ->
+            NavHostProvider(
+                modifier = modifier,
+                navController = navController,
+                startDestination = startScreen,
+                paddingValues = paddingValues,
+                permissions = locationPermissions.allPermissionsGranted
+            )
+        },
+        bottomBar = {
+            BottomAppBarProvider(
+                navController,
+                currentScreen = currentBottomScreen,
+                userDestinations
+            )
+        }
+    )
 }

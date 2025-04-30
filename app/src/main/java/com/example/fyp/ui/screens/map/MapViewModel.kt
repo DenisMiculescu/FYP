@@ -68,7 +68,8 @@ class MapViewModel @Inject constructor(
             val url =
                 "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                         "location=${loc.latitude},${loc.longitude}" +
-                        "&radius=2000&type=pharmacy&key=$apiKey"
+                        "&radius=50000&type=pharmacy&key=$apiKey"
+            Timber.i("API_KEYY = $apiKey")
             val request = Request.Builder().url(url).build()
             try {
                 val response = client.newCall(request).execute()

@@ -123,11 +123,7 @@ fun LoginScreen(
             }
             is Response.Success -> {
                 LaunchedEffect(Unit) {
-                    navController.navigate(Home.route) {
-                        popUpTo(Login.route) {
-                            inclusive = true
-                        }
-                    }
+                    onLogin()
                 }
             }
         }
