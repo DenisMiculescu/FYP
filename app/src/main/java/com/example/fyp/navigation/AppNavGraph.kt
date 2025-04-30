@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.fyp.ui.screens.map.MapScreen
 import com.example.fyp.ui.screens.about.AboutScreen
 import com.example.fyp.ui.screens.details.DetailsScreen
 import com.example.fyp.ui.screens.home.HomeScreen
@@ -22,7 +23,8 @@ fun NavHostProvider(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     startDestination: AppDestination,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    permissions: Boolean,
 ) {
     NavHost(
         navController = navController,
@@ -87,6 +89,11 @@ fun NavHostProvider(
                     }
                 },
             )
+        }
+
+        composable(route = Map.route) {
+            //call our 'Map' Screen Here
+            MapScreen(permissions = permissions)
         }
 
     }

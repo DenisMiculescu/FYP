@@ -1,4 +1,4 @@
-package com.example.fyp.data
+package com.example.fyp.data.models
 
 import com.google.firebase.firestore.DocumentId
 import java.util.Date
@@ -11,5 +11,5 @@ data class ReceiptModel(
     val dateModified: Date = Date(),
     var description: String = "MESSAGE!",
     var email: String = "joe@bloggs.com",
-    var imageUri: String = ""
+    var imageUri: String = "",
 )

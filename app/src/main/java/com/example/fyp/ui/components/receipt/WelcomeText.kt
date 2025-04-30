@@ -1,4 +1,4 @@
-package com.example.fyp.components.receipt
+package com.example.fyp.ui.components.receipt
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,12 +29,6 @@ fun WelcomeText(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold,
             fontSize = 28.sp,
             color = Color.Black
-        )
-        Text(
-            text = stringResource(R.string.appSubtitle),
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            color = MaterialTheme.colorScheme.tertiary
         )
     }
 }

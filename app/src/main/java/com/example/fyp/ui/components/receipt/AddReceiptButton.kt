@@ -16,19 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fyp.R
-import com.example.fyp.data.ReceiptModel
-import com.example.fyp.ui.components.general.ShowLoader
+import com.example.fyp.data.models.ReceiptModel
 import com.example.fyp.ui.screens.receipt.ReceiptViewModel
 import com.example.fyp.ui.screens.report.ReportViewModel
-import timber.log.Timber
 
 
 @Composable
@@ -66,20 +61,6 @@ fun AddReceiptButton(
         }
 
         Spacer(modifier.weight(1f))
-        Text(
-
-            buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = Color.Black
-                    )
-                ) {
-                    append(stringResource(R.string.total) + " €")
-                }
-
-            })
     }
 
     if(isError)

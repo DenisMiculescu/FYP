@@ -1,7 +1,7 @@
 package com.example.fyp.firebase.services
 
 import android.net.Uri
-import com.example.fyp.data.ReceiptModel
+import com.example.fyp.data.models.ReceiptModel
 import kotlinx.coroutines.flow.Flow
 
 typealias Receipt = ReceiptModel

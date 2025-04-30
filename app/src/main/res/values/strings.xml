@@ -1,17 +1,11 @@
 <resources>
     <string name="app_name">Receiptly</string>
     <string name="appTitle">Welcome!</string>
-    <string name="appSubtitle">Please Give Generously</string>
     <string name="addButton">Add</string>
-    <string name="paypal">PayPal</string>
-    <string name="direct">Direct</string>
     <string name="amount">Amount</string>
-    <string name="total">Total : </string>
-    <string name="totalSoFar">€%d</string>
     <string name="reportTitle">Receipts List</string>
     <string name="defaultAmount">00</string>
     <string name="defaultMethod">N/A</string>
-    <string name="defaultMessage">Go Homer!</string>
     <string name="enter_message">Enter Message</string>
     <string name="show_less">Show Less</string>
     <string name="show_more">Show More</string>
@@ -38,6 +32,5 @@
     <string name="forgot_password">Forgot your password</string>
     <string name="home">Home</string>
     <string name="logout">Logout</string>
-
 
 </resources>

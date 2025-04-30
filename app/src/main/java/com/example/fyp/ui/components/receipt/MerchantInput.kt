@@ -1,4 +1,4 @@
-package com.example.fyp.components.receipt
+package com.example.fyp.ui.components.receipt
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme

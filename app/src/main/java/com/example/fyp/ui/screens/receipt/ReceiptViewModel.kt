@@ -3,7 +3,7 @@ package com.example.fyp.ui.screens.receipt
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fyp.data.ReceiptModel
+import com.example.fyp.data.models.ReceiptModel
 import com.example.fyp.firebase.services.AuthService
 import com.example.fyp.firebase.services.FirestoreService
 import dagger.hilt.android.lifecycle.HiltViewModel

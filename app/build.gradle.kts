@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.android.ksp)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -14,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.fyp"
-        minSdk = 33
+        minSdk = 29
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -69,6 +70,7 @@ dependencies {
     implementation(libs.androidx.room.common.jvm)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.androidx.lifecycle.compiler)
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -103,6 +105,7 @@ dependencies {
 
     //Google Services
     implementation(libs.play.services.auth)
+    implementation(libs.google.places)
 
     //Firebase
     implementation(libs.firebase.auth)
@@ -112,5 +115,15 @@ dependencies {
 
     //Coil
     implementation(libs.coil.compose)
+
+    //Google Maps & Location
+    implementation(libs.play.services.location)
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.maps)
+    implementation (libs.places.v330)
+
+
+    //Accompanist (Permission)
+    implementation(libs.accompanist.permissions)
 
 }

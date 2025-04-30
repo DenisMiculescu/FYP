@@ -7,14 +7,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fyp.ui.components.receipt.AddReceiptButton
-import com.example.fyp.components.receipt.WelcomeText
-import com.example.fyp.components.receipt.AmountPicker
-import com.example.fyp.components.receipt.DescriptionInput
-import com.example.fyp.components.receipt.MerchantInput
-import com.example.fyp.data.ReceiptModel
+import com.example.fyp.ui.components.receipt.WelcomeText
+import com.example.fyp.ui.components.receipt.AmountPicker
+import com.example.fyp.ui.components.receipt.DescriptionInput
+import com.example.fyp.ui.components.receipt.MerchantInput
+import com.example.fyp.data.models.ReceiptModel
 import com.example.fyp.ui.screens.report.ReportViewModel
 import java.util.Date
-import kotlin.random.Random
 
 @Composable
 fun ReceiptScreen(modifier: Modifier = Modifier,
