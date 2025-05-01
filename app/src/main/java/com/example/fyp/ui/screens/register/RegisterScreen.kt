@@ -3,6 +3,8 @@ package com.example.fyp.ui.screens.register
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -14,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fyp.R
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,12 +25,9 @@ import com.example.fyp.navigation.Home
 import com.example.fyp.navigation.Register
 import com.example.fyp.ui.components.general.ButtonComponent
 import com.example.fyp.ui.components.general.CheckboxComponent
-import com.example.fyp.ui.components.general.ClickableLoginTextComponent
-import com.example.fyp.ui.components.general.DividerTextComponent
 import com.example.fyp.ui.components.general.HeadingLogoComponent
 import com.example.fyp.ui.components.general.HeadingTextComponent
 import com.example.fyp.ui.components.general.MyTextFieldComponent
-import com.example.fyp.ui.components.general.NormalTextComponent
 import com.example.fyp.ui.components.general.PasswordTextFieldComponent
 import com.example.fyp.ui.components.general.ShowLoader
 
@@ -52,7 +50,11 @@ fun RegisterScreen(
                 .background(Color.White)
                 .padding(28.dp)
         ) {
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
 
                 HeadingTextComponent(value = stringResource(id = R.string.create_account))
                 Spacer(modifier = Modifier.height(20.dp))
