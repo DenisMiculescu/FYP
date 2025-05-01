@@ -1,13 +1,11 @@
 package com.example.fyp.ui.components.report
 
-import android.net.Uri
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Business
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -32,7 +30,8 @@ fun ReceiptCard(
     dateCreated: String,
     dateModified: String,
     description: String,
-    photoUri: Uri,
+    photoUri: String,
+    receiptImageUrl: String,
     onClickDelete: () -> Unit,
     onClickReceiptDetails: () -> Unit,
 ) {
@@ -49,9 +48,9 @@ fun ReceiptCard(
             dateModified,
             description,
             photoUri,
+            receiptImageUrl,
             onClickDelete,
-            onClickReceiptDetails,
-//            onRefreshList
+            onClickReceiptDetails
         )
     }
 }
@@ -63,12 +62,14 @@ private fun ReceiptCardContent(
     dateCreated: String,
     dateModified: String,
     description: String,
-    photoUri: Uri,
+    photoUri: String,
+    receiptImageUrl: String,
     onClickDelete: () -> Unit,
     onClickReceiptDetails: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
+    var showImageDialog by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
@@ -97,6 +98,7 @@ private fun ReceiptCardContent(
                         .size(50.dp)
                         .clip(CircleShape)
                 )
+                Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = merchant,
                     style = MaterialTheme.typography.headlineMedium.copy(
@@ -112,14 +114,8 @@ private fun ReceiptCardContent(
                 )
             }
 
-            Text(
-                text = "Date Added: $dateCreated",
-                style = MaterialTheme.typography.labelSmall
-            )
-            Text(
-                text = "Date Modified: $dateModified",
-                style = MaterialTheme.typography.labelSmall
-            )
+            Text(text = "Date Added: $dateCreated", style = MaterialTheme.typography.labelSmall)
+            Text(text = "Date Modified: $dateModified", style = MaterialTheme.typography.labelSmall)
 
             if (expanded) {
                 Text(
@@ -127,12 +123,16 @@ private fun ReceiptCardContent(
                     text = description
                 )
 
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+                    FilledTonalButton(onClick = { showImageDialog = true }) {
+                        Text("View Receipt Image")
+                    }
+
                     FilledTonalButton(onClick = onClickReceiptDetails) {
-                        Text(text = "Show More...")
+                        Text("Show More...")
                     }
 
                     FilledTonalIconButton(onClick = {
@@ -144,11 +144,35 @@ private fun ReceiptCardContent(
                     if (showDeleteConfirmDialog) {
                         ShowDeleteAlert(
                             onDismiss = { showDeleteConfirmDialog = false },
-                            onDelete = onClickDelete,
-//                            onRefresh = onRefreshList
+                            onDelete = onClickDelete
                         )
                     }
                 }
+            }
+
+            if (showImageDialog) {
+                AlertDialog(
+                    onDismissRequest = { showImageDialog = false },
+                    confirmButton = {
+                        TextButton(onClick = { showImageDialog = false }) {
+                            Text("Close")
+                        }
+                    },
+                    text = {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(receiptImageUrl)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = "Receipt Image",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(400.dp)
+                                .clip(MaterialTheme.shapes.medium)
+                        )
+
+                    }
+                )
             }
         }
 
@@ -175,15 +199,14 @@ fun ShowDeleteAlert(
         title = { Text(stringResource(id = R.string.confirm_delete)) },
         text = { Text(stringResource(id = R.string.confirm_delete_message)) },
         confirmButton = {
-            Button(
-                onClick = {
-                    onDelete()
-//                    onRefresh()
-                }
-            ) { Text("Yes") }
+            Button(onClick = onDelete) {
+                Text("Yes")
+            }
         },
         dismissButton = {
-            Button(onClick = onDismiss) { Text("No") }
+            Button(onClick = onDismiss) {
+                Text("No")
+            }
         }
     )
 }

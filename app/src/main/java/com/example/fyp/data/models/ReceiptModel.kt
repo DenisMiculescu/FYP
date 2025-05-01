@@ -11,5 +11,6 @@ data class ReceiptModel(
     val dateModified: Date = Date(),
     var description: String = "MESSAGE!",
     var email: String = "joe@bloggs.com",
-    var imageUri: String = "",
+    var photoUri: String = "",
+    var receiptImageUrl: String = ""
 )

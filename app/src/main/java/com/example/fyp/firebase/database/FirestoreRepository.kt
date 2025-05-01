@@ -36,7 +36,7 @@ class FirestoreRepository
         val receiptWithEmailAndImage =
             receipt.copy(
                 email = email,
-                imageUri = auth.customPhotoUri?.toString().orEmpty()
+                photoUri = auth.customPhotoUri?.toString().orEmpty()
             )
 
         firestore.collection(RECEIPT_COLLECTION)
