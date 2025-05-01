@@ -36,12 +36,17 @@ constructor(
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                repository.getAll(authService.email!!).collect { items ->
-                    _receipts.value = items
-                    isErr.value = false
-                    isLoading.value = false
+                val email = authService.email
+                if (!email.isNullOrEmpty()) {
+                    repository.getAll(authService.email!!).collect { items ->
+                        _receipts.value = items
+                        isErr.value = false
+                        isLoading.value = false
+                    }
+                } else {
+                    Timber.e("ReportVM: email is null, skipping getAll()")
                 }
-                Timber.i("DVM RVM = : ${_receipts.value}")
+                // Timber.i("DVM RVM = : ${_receipts.value}")
             }
             catch(e:Exception) {
                 isErr.value = true

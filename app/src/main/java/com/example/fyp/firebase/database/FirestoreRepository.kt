@@ -15,20 +15,19 @@ import timber.log.Timber
 import java.util.Date
 import javax.inject.Inject
 
+
 class FirestoreRepository
 @Inject constructor(private val auth: AuthService,
                     private val firestore: FirebaseFirestore
 ) : FirestoreService {
 
-    override suspend fun getAll(email: String): Receipts
-    {
+    override suspend fun getAll(email: String): Receipts {
         return firestore.collection(RECEIPT_COLLECTION)
             .whereEqualTo(USER_EMAIL, email)
             .dataObjects()
     }
-
-    override suspend fun get(email: String, receiptId: String): Receipt?
-    {
+    override suspend fun get(email: String,
+                             receiptId: String): Receipt? {
         return firestore.collection(RECEIPT_COLLECTION)
             .document(receiptId).get().await().toObject()
     }
@@ -37,7 +36,7 @@ class FirestoreRepository
         val receiptWithEmailAndImage =
             receipt.copy(
                 email = email,
-                imageUri = auth.customPhotoUri!!.toString()
+                imageUri = auth.customPhotoUri?.toString().orEmpty()
             )
 
         firestore.collection(RECEIPT_COLLECTION)
@@ -45,10 +44,8 @@ class FirestoreRepository
             .await()
     }
 
-
     override suspend fun update(email: String,
-                                receipt: Receipt)
-    {
+                                receipt: Receipt) {
         val receiptWithModifiedDate =
             receipt.copy(dateModified = Date())
 
@@ -58,8 +55,7 @@ class FirestoreRepository
     }
 
     override suspend fun delete(email: String,
-                                receiptId: String)
-    {
+                                receiptId: String) {
         firestore.collection(RECEIPT_COLLECTION)
             .document(receiptId)
             .delete().await()
@@ -72,7 +68,7 @@ class FirestoreRepository
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    Timber.i("FSR Updating ID: ${document.id}")
+                    Timber.i("FSR Updating ID ${document.id}")
                     firestore.collection(RECEIPT_COLLECTION)
                         .document(document.id)
                         .update("imageUri", uri.toString())
@@ -82,5 +78,4 @@ class FirestoreRepository
                 Timber.i("Error $exception")
             }
     }
-
 }

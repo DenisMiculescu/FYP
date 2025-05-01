@@ -36,10 +36,6 @@ fun ReportScreen(modifier: Modifier = Modifier,
 
     Timber.i("RS : Receipts List = $receipts")
 
-//    LaunchedEffect(Unit) {
-//        reportViewModel.getReceipts()
-//    }
-
     Column {
         Column(
             modifier = modifier.padding(
@@ -51,9 +47,6 @@ fun ReportScreen(modifier: Modifier = Modifier,
             if(isLoading) ShowLoader("Loading Receipts...")
 
             ReportText()
-
-//            if(!isError)
-//                ShowRefreshList(onClick = { reportViewModel.getReceipts() })
 
             if (receipts.isEmpty() && !isError)
                 Centre(Modifier.fillMaxSize()) {

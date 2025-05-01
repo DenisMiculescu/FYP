@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -94,7 +93,6 @@ fun LoginScreen(
                     value = stringResource(id = R.string.login),
                     onButtonClicked = {
                         loginViewModel.onEvent(LoginUIEvent.LoginButtonClicked)
-                        onLogin()
                     },
                     isEnabled = loginViewModel.allValidationsPassed.value
                 )
@@ -124,6 +122,9 @@ fun LoginScreen(
             is Response.Success -> {
                 LaunchedEffect(Unit) {
                     onLogin()
+                    navController.navigate(Home.route) {
+                        popUpTo(Login.route) { inclusive = true }
+                    }
                 }
             }
         }

@@ -45,12 +45,15 @@ fun ProfileScreen(
         HeadingTextComponent(value = stringResource(id = R.string.account_settings))
         Spacer(modifier = Modifier.height(10.dp))
 
-        if(photoUri.toString().isNotEmpty())
-            ProfileContent(
-                photoUri = photoUri,
-                displayName = profileViewModel.displayName,
-                email = profileViewModel.email
-            )
+        val fallbackUri = Uri.parse("com.example.fyp:drawable/${R.drawable.default_user}")
+        val uriToShow = if (photoUri?.toString().isNullOrEmpty()) fallbackUri else photoUri!!
+
+        ProfileContent(
+            photoUri = uriToShow,
+            displayName = profileViewModel.displayName.ifEmpty { "User" },
+            email = profileViewModel.email
+        )
+
         ShowPhotoPicker(
             onPhotoUriChanged = {
                 photoUri = it

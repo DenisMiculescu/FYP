@@ -75,7 +75,7 @@ fun MapScreen(
     LaunchedEffect(Unit) {
         val drawable = ContextCompat.getDrawable(context, R.drawable.pharmacy_marker)
         drawable?.let {
-            val bitmap = Bitmap.createBitmap(96, 96, Bitmap.Config.ARGB_8888)
+            val bitmap = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmap)
             it.setBounds(0, 0, canvas.width, canvas.height)
             it.draw(canvas)

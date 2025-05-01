@@ -31,6 +31,7 @@ constructor(private val repository: FirestoreService,
                 isErr.value = true
                 error.value = e
                 isLoading.value = false
+                Timber.e(e, "Error inserting receipt")
             }
             Timber.i("DVM Insert Message = : ${error.value.message} and isError ${isErr.value}")
         }

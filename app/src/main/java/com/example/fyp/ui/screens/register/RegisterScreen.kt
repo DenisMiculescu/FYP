@@ -94,7 +94,6 @@ fun RegisterScreen(
                     value = stringResource(id = R.string.register),
                     onButtonClicked = {
                         registerViewModel.onEvent(RegisterUIEvent.RegisterButtonClicked)
-                        onRegister()
                     },
                     isEnabled = registerViewModel.allValidationsPassed.value
                 )
@@ -120,6 +119,7 @@ fun RegisterScreen(
             }
             is Response.Success -> {
                 LaunchedEffect(Unit) {
+                    onRegister()
                     navController.navigate(Home.route) {
                         popUpTo(Register.route) {
                             inclusive = true
@@ -129,94 +129,4 @@ fun RegisterScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun DefaultPreviewOfSignUpScreen() {
-    PreviewRegisterScreen()
-}
-
-@Composable
-fun PreviewRegisterScreen() {
-
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(28.dp)
-        ) {
-            Column(modifier = Modifier.fillMaxSize()) {
-
-                NormalTextComponent(value = stringResource(id = R.string.register))
-                HeadingTextComponent(value = stringResource(id = R.string.create_account))
-                Spacer(modifier = Modifier.height(20.dp))
-                HeadingLogoComponent()
-                Spacer(modifier = Modifier.height(20.dp))
-
-                MyTextFieldComponent(
-                    labelValue = stringResource(id = R.string.first_name),
-                    painterResource(id = R.drawable.profile),
-                    onTextChanged = {
-                        //  registerViewModel.onEvent(RegisterUIEvent.FirstNameChanged(it))
-                    },
-                    //errorStatus = registerViewModel.registrationUIState.value.firstNameError
-                    errorStatus = true
-                )
-
-                MyTextFieldComponent(
-                    labelValue = stringResource(id = R.string.email),
-                    painterResource = painterResource(id = R.drawable.message),
-                    onTextChanged = {
-                        //registerViewModel.onEvent(RegisterUIEvent.EmailChanged(it))
-                    },
-                    errorStatus = true
-                )
-
-                PasswordTextFieldComponent(
-                    labelValue = stringResource(id = R.string.password),
-                    painterResource = painterResource(id = R.drawable.lock),
-                    onTextSelected = {
-                        //   registerViewModel.onEvent(RegisterUIEvent.PasswordChanged(it))
-                    },
-                    // errorStatus = registerViewModel.registrationUIState.value.passwordError
-                    errorStatus = true
-                )
-
-                CheckboxComponent(value = stringResource(id = R.string.terms_and_conditions),
-                    onTextSelected = {
-                        //  PostOfficeAppRouter.navigateTo(Screen.TermsAndConditionsScreen)
-                    },
-                    onCheckedChange = {
-                        //    registerViewModel.onEvent(RegisterUIEvent.PrivacyPolicyCheckBoxClicked(it))
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(40.dp))
-
-                ButtonComponent(
-                    value = stringResource(id = R.string.register),
-                    onButtonClicked = {
-                        //   registerViewModel.onEvent(RegisterUIEvent.RegisterButtonClicked)
-                    },
-                    //    isEnabled = registerViewModel.allValidationsPassed.value
-                    isEnabled = true
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                DividerTextComponent()
-
-                ClickableLoginTextComponent(tryingToLogin = true, onTextSelected = {
-                    //AuthAppRouter.navigateTo(Screen.LoginScreen)
-                })
-            }
-        }
-    }
-
 }

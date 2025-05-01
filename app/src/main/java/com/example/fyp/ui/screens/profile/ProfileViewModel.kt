@@ -13,13 +13,16 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val authService: AuthService,
-    private val auth: FirebaseAuth,
-    private val firestoreService: FirestoreService
+    private val firestoreService: FirestoreService,
 ) : ViewModel() {
 
-    val displayName get() = auth.currentUser?.displayName.toString()
-    val photoUri get() = authService.customPhotoUri
-    val email get() = auth.currentUser?.email.toString()
+    val displayName get() = authService.currentUser?.displayName.toString()
+    val photoUri: Uri?
+        get() {
+            authService.currentUser?.reload()
+            return authService.currentUser?.photoUrl
+        }
+    val email get() = authService.email.toString()
 
     fun signOut() {
         viewModelScope.launch { authService.signOut() }
@@ -31,5 +34,4 @@ class ProfileViewModel @Inject constructor(
             firestoreService.updatePhotoUris(email,photoUri!!)
         }
     }
-
 }

@@ -46,14 +46,12 @@ class MapViewModel @Inject constructor(
     }
 
     private fun setCurrentLatLng(latLng: LatLng) {
-        Timber.i("Updating current location to: $latLng")
         _currentLatLng.value = latLng
     }
 
     fun getLocationUpdates() {
         viewModelScope.launch(Dispatchers.IO) {
             locationTracker.getLocationFlow().collect {
-                Timber.i("Received location update: $it")
                 it?.let { location ->
                     setCurrentLatLng(LatLng(location.latitude, location.longitude))
                 }
@@ -69,7 +67,6 @@ class MapViewModel @Inject constructor(
                 "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                         "location=${loc.latitude},${loc.longitude}" +
                         "&radius=50000&type=pharmacy&key=$apiKey"
-            Timber.i("API_KEYY = $apiKey")
             val request = Request.Builder().url(url).build()
             try {
                 val response = client.newCall(request).execute()

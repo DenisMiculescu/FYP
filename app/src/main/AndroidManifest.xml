@@ -11,6 +11,7 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/receipticon"
         android:label="@string/app_name"
         android:roundIcon="@drawable/receipticon"
         android:supportsRtl="true"
@@ -22,7 +23,6 @@
         <activity
             android:name=".FYPMainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.FYP">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
