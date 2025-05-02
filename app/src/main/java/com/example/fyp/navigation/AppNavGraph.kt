@@ -31,15 +31,7 @@ fun NavHostProvider(
         startDestination = startDestination.route,
         modifier = Modifier.padding(paddingValues = paddingValues)) {
 
-        composable(route = Receipt.route) {
-            ReceiptScreen(
-                modifier = modifier,
-                navController = navController,
-            )
-        }
-
         composable(route = Home.route) {
-            //call our 'Home' Screen Here
             HomeScreen(modifier = modifier)
         }
 
@@ -68,7 +60,6 @@ fun NavHostProvider(
         }
 
         composable(route = Login.route) {
-            //call our 'Login' Screen Here
             LoginScreen(
                 navController = navController,
                 onLogin = { navController.popBackStack() }
@@ -76,7 +67,6 @@ fun NavHostProvider(
         }
 
         composable(route = Register.route) {
-            //call our 'Register' Screen Here
             RegisterScreen(
                 navController = navController,
                 onRegister = { navController.popBackStack() }
@@ -95,7 +85,6 @@ fun NavHostProvider(
         }
 
         composable(route = Map.route) {
-            //call our 'Map' Screen Here
             MapScreen(permissions = permissions)
         }
 

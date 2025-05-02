@@ -26,12 +26,6 @@ object Report : AppDestination {
     override val route = "report"
 }
 
-object Receipt : AppDestination {
-    override val icon = Icons.Filled.AddCircle
-    override val label = "Receipt"
-    override val route = "receipt"
-}
-
 object About : AppDestination {
     override val icon = Icons.Filled.Info
     override val label = "About"
@@ -78,7 +72,13 @@ object Map : AppDestination {
     override val route = "Map"
 }
 
-val bottomAppBarDestinations = listOf(Receipt, Map, Report, About, Profile)
+object AddReceipt : AppDestination {
+    override val icon = Icons.Filled.AddCircle
+    override val label = "Add Receipt"
+    override val route = "add_receipt"
+}
+
+val bottomAppBarDestinations = listOf(AddReceipt, Map, Report, About, Profile)
 val userSignedOutDestinations = listOf(Login, Register)
-val allDestinations = listOf(Report, Receipt, About, Details, Home, Profile, Login, Register, Map)
+val allDestinations = listOf(Report, About, Details, Home, Profile, Login, Register, Map)
 

@@ -32,10 +32,12 @@ fun ReceiptCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
+        shape = MaterialTheme.shapes.large,
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier
-            .padding(vertical = 4.dp, horizontal = 2.dp)
+            .padding(8.dp)
             .fillMaxWidth()
     ) {
         ReceiptCardContent(
@@ -49,6 +51,7 @@ fun ReceiptCard(
         )
     }
 }
+
 
 @Composable
 private fun ReceiptCardContent(
@@ -66,7 +69,7 @@ private fun ReceiptCardContent(
 
     Column(
         modifier = Modifier
-            .padding(12.dp)
+            .padding(16.dp)
             .animateContentSize(
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioMediumBouncy,
@@ -75,75 +78,86 @@ private fun ReceiptCardContent(
             )
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = merchant,
-                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),
-                modifier = Modifier.weight(1f)
-            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = merchant,
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    text = date,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
             Text(
                 text = "€%.2f".format(amount),
-                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.primary
             )
         }
-
-        Text(text = "Date: $date", style = MaterialTheme.typography.labelSmall)
 
         if (expanded) {
             Spacer(modifier = Modifier.height(12.dp))
 
-            if (items.isNotEmpty()) {
+            Divider()
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Items Purchased",
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.primary
+            )
+
+            items.forEach { item ->
                 Text(
-                    text = "Items Purchased:",
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+                    text = "• $item",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(start = 8.dp, top = 2.dp)
                 )
-                Spacer(modifier = Modifier.height(4.dp))
-                items.forEach { item ->
-                    Text(text = "- $item", style = MaterialTheme.typography.bodySmall)
-                }
-            } else {
-                Text(text = "No item list found.", style = MaterialTheme.typography.bodySmall)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            FilledTonalButton(onClick = { showImageDialog = true }) {
-                Text("View Receipt Image")
-            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                OutlinedButton(
+                    onClick = { showImageDialog = true },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("View Image")
+                }
 
-            FilledTonalButton(onClick = onClickReceiptDetails) {
-                Text("Show More...")
-            }
+                OutlinedButton(
+                    onClick = onClickReceiptDetails,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Details")
+                }
 
-            FilledTonalIconButton(onClick = { showDeleteConfirmDialog = true }) {
-                Icon(Icons.Filled.Delete, contentDescription = "Delete Receipt")
-            }
-
-            if (showDeleteConfirmDialog) {
-                AlertDialog(
-                    onDismissRequest = { showDeleteConfirmDialog = false },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            showDeleteConfirmDialog = false
-                            onClickDelete()
-                        }) {
-                            Text("Yes")
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = { showDeleteConfirmDialog = false }) {
-                            Text("No")
-                        }
-                    },
-                    title = { Text("Delete Receipt") },
-                    text = { Text("Are you sure you want to delete this receipt?") }
-                )
+                IconButton(
+                    onClick = { showDeleteConfirmDialog = true },
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = "Delete Receipt",
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
             }
         }
 
-        IconButton(onClick = { expanded = !expanded }) {
+        IconButton(
+            onClick = { expanded = !expanded },
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
             Icon(
                 imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                contentDescription = if (expanded) "Show less" else "Show more"
+                contentDescription = if (expanded) "Collapse" else "Expand"
             )
         }
 
@@ -164,10 +178,31 @@ private fun ReceiptCardContent(
                         contentDescription = "Receipt Image",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .aspectRatio(5f / 6f)
+                            .aspectRatio(3f / 4f)
                             .clip(MaterialTheme.shapes.medium)
                     )
                 }
+            )
+        }
+
+        if (showDeleteConfirmDialog) {
+            AlertDialog(
+                onDismissRequest = { showDeleteConfirmDialog = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        showDeleteConfirmDialog = false
+                        onClickDelete()
+                    }) {
+                        Text("Yes")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDeleteConfirmDialog = false }) {
+                        Text("No")
+                    }
+                },
+                title = { Text("Delete Receipt?") },
+                text = { Text("Are you sure you want to delete this receipt?") }
             )
         }
     }
