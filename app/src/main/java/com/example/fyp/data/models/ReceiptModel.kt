@@ -7,7 +7,6 @@ data class ReceiptModel(
     @DocumentId val _id: String = "N/A",
     var dateCreated: Date = Date(),
     val dateModified: Date = Date(),
-    var description: String = "MESSAGE!",
     var email: String = "joe@bloggs.com",
     var photoUri: String = "",
 

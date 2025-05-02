@@ -26,11 +26,5 @@ fun DetailsScreenText(modifier: Modifier = Modifier) {
             fontSize = 28.sp,
             color = Color.Black
         )
-        Text(
-            text = "Please Update your Description Below",
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            color = MaterialTheme.colorScheme.tertiary
-        )
     }
 }

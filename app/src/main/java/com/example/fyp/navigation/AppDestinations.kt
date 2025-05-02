@@ -78,7 +78,7 @@ object AddReceipt : AppDestination {
     override val route = "add_receipt"
 }
 
-val bottomAppBarDestinations = listOf(AddReceipt, Map, Report, About, Profile)
+val bottomAppBarDestinations = listOf(AddReceipt, Map, Report, Profile)
 val userSignedOutDestinations = listOf(Login, Register)
 val allDestinations = listOf(Report, About, Details, Home, Profile, Login, Register, Map)
 

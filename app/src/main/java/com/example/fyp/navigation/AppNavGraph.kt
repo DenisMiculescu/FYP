@@ -13,7 +13,6 @@ import com.example.fyp.ui.screens.details.DetailsScreen
 import com.example.fyp.ui.screens.home.HomeScreen
 import com.example.fyp.ui.screens.login.LoginScreen
 import com.example.fyp.ui.screens.profile.ProfileScreen
-import com.example.fyp.ui.screens.receipt.ReceiptScreen
 import com.example.fyp.ui.screens.register.RegisterScreen
 import com.example.fyp.ui.screens.report.ReportScreen
 
