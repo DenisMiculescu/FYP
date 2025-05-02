@@ -5,12 +5,15 @@ import java.util.Date
 
 data class ReceiptModel(
     @DocumentId val _id: String = "N/A",
-    var merchant: String = "N/A",
-    var amount: Float = 0.00F,
     var dateCreated: Date = Date(),
     val dateModified: Date = Date(),
     var description: String = "MESSAGE!",
     var email: String = "joe@bloggs.com",
     var photoUri: String = "",
-    var receiptImageUrl: String = ""
+
+    var amount: Float = 0.00F,
+    var merchant: String = "N/A",
+    var receiptImageUrl: String = "",
+    var date: String = "",
+    val items: List<String> = emptyList()
 )

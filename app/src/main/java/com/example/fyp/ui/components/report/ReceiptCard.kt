@@ -14,43 +14,38 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.fyp.R
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun ReceiptCard(
     merchant: String,
     amount: Float,
-    dateCreated: String,
-    dateModified: String,
-    description: String,
-    photoUri: String,
+    date: String,
     receiptImageUrl: String,
+    items: List<String>,
     onClickDelete: () -> Unit,
-    onClickReceiptDetails: () -> Unit,
+    onClickReceiptDetails: () -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary
         ),
-        modifier = Modifier.padding(vertical = 4.dp, horizontal = 2.dp)
+        modifier = Modifier
+            .padding(vertical = 4.dp, horizontal = 2.dp)
+            .fillMaxWidth()
     ) {
         ReceiptCardContent(
-            merchant,
-            amount,
-            dateCreated,
-            dateModified,
-            description,
-            photoUri,
-            receiptImageUrl,
-            onClickDelete,
-            onClickReceiptDetails
+            merchant = merchant,
+            amount = amount,
+            date = date,
+            receiptImageUrl = receiptImageUrl,
+            items = items,
+            onClickDelete = onClickDelete,
+            onClickReceiptDetails = onClickReceiptDetails
         )
     }
 }
@@ -59,19 +54,17 @@ fun ReceiptCard(
 private fun ReceiptCardContent(
     merchant: String,
     amount: Float,
-    dateCreated: String,
-    dateModified: String,
-    description: String,
-    photoUri: String,
+    date: String,
     receiptImageUrl: String,
+    items: List<String>,
     onClickDelete: () -> Unit,
-    onClickReceiptDetails: () -> Unit,
+    onClickReceiptDetails: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
     var showImageDialog by remember { mutableStateOf(false) }
 
-    Row(
+    Column(
         modifier = Modifier
             .padding(12.dp)
             .animateContentSize(
@@ -81,97 +74,68 @@ private fun ReceiptCardContent(
                 )
             )
     ) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .padding(4.dp)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(photoUri)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clip(CircleShape)
-                )
-                Spacer(modifier = Modifier.width(12.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = merchant,
+                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "€%.2f".format(amount),
+                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
+            )
+        }
+
+        Text(text = "Date: $date", style = MaterialTheme.typography.labelSmall)
+
+        if (expanded) {
+            Spacer(modifier = Modifier.height(12.dp))
+
+            if (items.isNotEmpty()) {
                 Text(
-                    text = merchant,
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.ExtraBold
-                    )
+                    text = "Items Purchased:",
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
                 )
-                Spacer(Modifier.weight(1f))
-                Text(
-                    text = "€$amount",
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.ExtraBold
-                    )
-                )
-            }
-
-            Text(text = "Date Added: $dateCreated", style = MaterialTheme.typography.labelSmall)
-            Text(text = "Date Modified: $dateModified", style = MaterialTheme.typography.labelSmall)
-
-            if (expanded) {
-                Text(
-                    modifier = Modifier.padding(vertical = 16.dp),
-                    text = description
-                )
-
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    FilledTonalButton(onClick = { showImageDialog = true }) {
-                        Text("View Receipt Image")
-                    }
-
-                    FilledTonalButton(onClick = onClickReceiptDetails) {
-                        Text("Show More...")
-                    }
-
-                    FilledTonalIconButton(onClick = {
-                        showDeleteConfirmDialog = true
-                    }) {
-                        Icon(Icons.Filled.Delete, contentDescription = "Delete Receipt")
-                    }
-
-                    if (showDeleteConfirmDialog) {
-                        ShowDeleteAlert(
-                            onDismiss = { showDeleteConfirmDialog = false },
-                            onDelete = onClickDelete
-                        )
-                    }
+                Spacer(modifier = Modifier.height(4.dp))
+                items.forEach { item ->
+                    Text(text = "- $item", style = MaterialTheme.typography.bodySmall)
                 }
+            } else {
+                Text(text = "No item list found.", style = MaterialTheme.typography.bodySmall)
             }
 
-            if (showImageDialog) {
+            Spacer(modifier = Modifier.height(12.dp))
+
+            FilledTonalButton(onClick = { showImageDialog = true }) {
+                Text("View Receipt Image")
+            }
+
+            FilledTonalButton(onClick = onClickReceiptDetails) {
+                Text("Show More...")
+            }
+
+            FilledTonalIconButton(onClick = { showDeleteConfirmDialog = true }) {
+                Icon(Icons.Filled.Delete, contentDescription = "Delete Receipt")
+            }
+
+            if (showDeleteConfirmDialog) {
                 AlertDialog(
-                    onDismissRequest = { showImageDialog = false },
+                    onDismissRequest = { showDeleteConfirmDialog = false },
                     confirmButton = {
-                        TextButton(onClick = { showImageDialog = false }) {
-                            Text("Close")
+                        TextButton(onClick = {
+                            showDeleteConfirmDialog = false
+                            onClickDelete()
+                        }) {
+                            Text("Yes")
                         }
                     },
-                    text = {
-                        AsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(receiptImageUrl)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = "Receipt Image",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .size(400.dp)
-                                .clip(MaterialTheme.shapes.medium)
-                        )
-
-                    }
+                    dismissButton = {
+                        TextButton(onClick = { showDeleteConfirmDialog = false }) {
+                            Text("No")
+                        }
+                    },
+                    title = { Text("Delete Receipt") },
+                    text = { Text("Are you sure you want to delete this receipt?") }
                 )
             }
         }
@@ -179,34 +143,32 @@ private fun ReceiptCardContent(
         IconButton(onClick = { expanded = !expanded }) {
             Icon(
                 imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                contentDescription = if (expanded) {
-                    stringResource(R.string.show_less)
-                } else {
-                    stringResource(R.string.show_more)
+                contentDescription = if (expanded) "Show less" else "Show more"
+            )
+        }
+
+        if (showImageDialog) {
+            AlertDialog(
+                onDismissRequest = { showImageDialog = false },
+                confirmButton = {
+                    TextButton(onClick = { showImageDialog = false }) {
+                        Text("Close")
+                    }
+                },
+                text = {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(receiptImageUrl)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "Receipt Image",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(5f / 6f)
+                            .clip(MaterialTheme.shapes.medium)
+                    )
                 }
             )
         }
     }
-}
-
-@Composable
-fun ShowDeleteAlert(
-    onDismiss: () -> Unit,
-    onDelete: () -> Unit,
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(id = R.string.confirm_delete)) },
-        text = { Text(stringResource(id = R.string.confirm_delete_message)) },
-        confirmButton = {
-            Button(onClick = onDelete) {
-                Text("Yes")
-            }
-        },
-        dismissButton = {
-            Button(onClick = onDismiss) {
-                Text("No")
-            }
-        }
-    )
 }

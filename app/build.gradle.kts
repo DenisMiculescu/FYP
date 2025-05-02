@@ -131,5 +131,7 @@ dependencies {
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.extensions)
 
-    
+    //OCR
+    implementation(libs.text.recognition)
+
 }

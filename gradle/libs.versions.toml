@@ -20,6 +20,7 @@ navigationCompose = "2.8.9"
 numberPicker = "1.0.3"
 compose-plugin = "1.8.0-alpha01"
 places = "3.3.0"
+textRecognition = "16.0.0-beta5"
 timber = "5.0.1"
 
 hiltAndroid = "2.52"
@@ -76,6 +77,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 numberPicker = { module = "com.chargemap.compose:numberpicker", version.ref = "numberPicker" }
 places-v320 = { module = "com.google.android.libraries.places:places", version.ref = "googlePlaces" }
 places-v330 = { module = "com.google.android.libraries.places:places", version.ref = "googlePlacesVersion" }
+text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "textRecognition" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 #Hilt

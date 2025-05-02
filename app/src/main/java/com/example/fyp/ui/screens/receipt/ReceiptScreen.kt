@@ -1,7 +1,7 @@
 package com.example.fyp.ui.screens.receipt
 
 import android.content.pm.PackageManager
-import android.os.Environment
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -48,6 +48,7 @@ fun ReceiptScreen(
             "receipt_${System.currentTimeMillis()}.jpg"
         )
     }
+
     val photoUri = remember {
         FileProvider.getUriForFile(
             context,
@@ -56,12 +57,16 @@ fun ReceiptScreen(
         )
     }
 
+    val performOCRAndUpload = { uri: Uri ->
+        receiptViewModel.uploadReceiptFromOCR(context, uri)
+        navController.navigate("report")
+    }
+
     val launcherCamera = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) { success ->
         if (success && photoFile.exists()) {
-            receiptViewModel.uploadReceiptImage(photoUri, merchant, amount.toFloat(), description, email)
-            navController.navigate("report")
+            performOCRAndUpload(photoUri)
         } else {
             Timber.e("Camera capture failed or file not found at ${photoFile.path}")
         }
@@ -80,14 +85,13 @@ fun ReceiptScreen(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let {
-            receiptViewModel.uploadReceiptImage(it, merchant, amount.toFloat(), description, email)
-            navController.navigate("report")
+            performOCRAndUpload(it)
         }
     }
 
     Column {
         Column(
-            modifier = modifier.padding(start = 24.dp, end = 24.dp),
+            modifier = modifier.padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.spacedBy(30.dp),
         ) {
             WelcomeText()

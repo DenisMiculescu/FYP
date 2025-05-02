@@ -2,11 +2,17 @@ package com.example.fyp.ui.screens.report
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +41,11 @@ fun ReportScreen(
     val isLoading = reportViewModel.isLoading.value
     val error = reportViewModel.error.value
 
+    var filterText by rememberSaveable { mutableStateOf("") }
+    val filteredReceipts = receipts.filter {
+        it.merchant.contains(filterText, ignoreCase = true)
+    }
+
     Timber.i("RS : Receipts List = $receipts")
 
     Column {
@@ -61,8 +72,14 @@ fun ReportScreen(
                     )}
 
             if (!isError) {
+                TextField(
+                    value = filterText,
+                    onValueChange = { value -> filterText = value },
+                    label = { Text("Search Pharmacy") },
+                    modifier = Modifier.fillMaxWidth()
+                )
                 ReceiptCardList(
-                    receipts = receipts,
+                    receipts = filteredReceipts,
                     onClickReceiptDetails = onClickReceiptDetails,
                     onDeleteReceipt = { receipt: ReceiptModel ->
                         reportViewModel.deleteReceipt(receipt)

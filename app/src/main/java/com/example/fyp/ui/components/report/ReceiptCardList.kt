@@ -22,13 +22,11 @@ internal fun ReceiptCardList(
             ReceiptCard(
                 merchant = receipt.merchant,
                 amount = receipt.amount,
-                dateCreated = DateFormat.getDateTimeInstance().format(receipt.dateCreated),
-                dateModified = DateFormat.getDateTimeInstance().format(receipt.dateModified),
-                description = receipt.description,
+                date = receipt.date,
                 receiptImageUrl = receipt.receiptImageUrl,
-                photoUri = receipt.photoUri,
+                items = receipt.items,
                 onClickDelete = { onDeleteReceipt(receipt) },
-                onClickReceiptDetails = { onClickReceiptDetails(receipt._id) },
+                onClickReceiptDetails = { onClickReceiptDetails(receipt._id) }
             )
         }
     }
