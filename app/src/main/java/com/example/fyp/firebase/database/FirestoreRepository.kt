@@ -71,7 +71,7 @@ class FirestoreRepository
                     Timber.i("FSR Updating ID ${document.id}")
                     firestore.collection(RECEIPT_COLLECTION)
                         .document(document.id)
-                        .update("imageUri", uri.toString())
+                        .update("photoUri", uri.toString())
                 }
             }
             .addOnFailureListener { exception ->

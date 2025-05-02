@@ -74,3 +74,5 @@ class ReceiptViewModel @Inject constructor(
             }
     }
 }
+
+

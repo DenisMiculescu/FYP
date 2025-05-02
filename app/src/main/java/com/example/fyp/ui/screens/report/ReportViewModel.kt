@@ -46,7 +46,6 @@ constructor(
                 } else {
                     Timber.e("ReportVM: email is null, skipping getAll()")
                 }
-                // Timber.i("DVM RVM = : ${_receipts.value}")
             }
             catch(e:Exception) {
                 isErr.value = true

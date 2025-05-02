@@ -24,10 +24,11 @@ import com.example.fyp.ui.components.general.ShowLoader
 import timber.log.Timber
 
 @Composable
-fun ReportScreen(modifier: Modifier = Modifier,
-                 reportViewModel: ReportViewModel = hiltViewModel(),
-                 onClickReceiptDetails: (String) -> Unit,
-                 ) {
+fun ReportScreen(
+    modifier: Modifier = Modifier,
+    reportViewModel: ReportViewModel = hiltViewModel(),
+    onClickReceiptDetails: (String) -> Unit,
+) {
 
     val receipts = reportViewModel.uiReceipts.collectAsState().value
     val isError = reportViewModel.isErr.value
@@ -66,7 +67,6 @@ fun ReportScreen(modifier: Modifier = Modifier,
                     onDeleteReceipt = { receipt: ReceiptModel ->
                         reportViewModel.deleteReceipt(receipt)
                     },
-//                    onRefreshList = { reportViewModel.getReceipts() }
                 )
             }
             if (isError) {
