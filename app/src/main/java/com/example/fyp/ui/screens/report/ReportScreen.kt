@@ -23,10 +23,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fyp.R
 import com.example.fyp.data.models.ReceiptModel
 import com.example.fyp.ui.components.report.ReceiptCardList
-import com.example.fyp.ui.components.report.ReportText
 import com.example.fyp.ui.components.general.Centre
 import com.example.fyp.ui.components.general.ShowError
 import com.example.fyp.ui.components.general.ShowLoader
+import com.example.fyp.ui.components.report.ReportText
 import timber.log.Timber
 
 @Composable
@@ -72,18 +72,18 @@ fun ReportScreen(
                     )}
 
             if (!isError) {
-                TextField(
-                    value = filterText,
-                    onValueChange = { value -> filterText = value },
-                    label = { Text("Search Pharmacy") },
-                    modifier = Modifier.fillMaxWidth()
-                )
                 ReceiptCardList(
                     receipts = filteredReceipts,
                     onClickReceiptDetails = onClickReceiptDetails,
                     onDeleteReceipt = { receipt: ReceiptModel ->
                         reportViewModel.deleteReceipt(receipt)
                     },
+                )
+                TextField(
+                    value = filterText,
+                    onValueChange = { value -> filterText = value },
+                    label = { Text("Search Pharmacy") },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             if (isError) {

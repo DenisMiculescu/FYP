@@ -14,6 +14,7 @@ import com.example.fyp.ui.screens.home.HomeScreen
 import com.example.fyp.ui.screens.login.LoginScreen
 import com.example.fyp.ui.screens.profile.ProfileScreen
 import com.example.fyp.ui.screens.register.RegisterScreen
+import com.example.fyp.ui.screens.reminder.ReminderScreen
 import com.example.fyp.ui.screens.report.ReportScreen
 
 
@@ -85,6 +86,10 @@ fun NavHostProvider(
 
         composable(route = Map.route) {
             MapScreen(permissions = permissions)
+        }
+
+        composable(route = Reminder.route) {
+            ReminderScreen()
         }
 
     }

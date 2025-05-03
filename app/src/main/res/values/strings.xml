@@ -33,4 +33,9 @@
     <string name="home">Home</string>
     <string name="logout">Logout</string>
 
+    <string name="reminderTitle">Prescription Reminder</string>
+    <string name="reminder_empty">No Reminders Yet - Go add a Reminder!</string>
+    <string name="reminderSubHeading">Your Reminders</string>
+
+
 </resources>

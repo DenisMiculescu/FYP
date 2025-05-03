@@ -10,7 +10,7 @@ val TertiaryBlue = Color(0xFF03A9F4)
 // Calming medical tones
 val Mint = Color(0xFFB2DFDB)
 val TealStrong = Color(0xFF00796B)
-val SurfaceBackground = Color(0xFFF9FDFB)
+val SurfaceBackground = Color(0xFFE3E3E3)
 val OnSurfaceText = Color(0xFF1E1E1E)
 
 // Optional gradients for prescription/pharma branding

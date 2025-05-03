@@ -21,10 +21,8 @@ constructor(
     private val authService: AuthService
 ) : ViewModel() {
 
-    private val _receipts
-            = MutableStateFlow<List<ReceiptModel>>(emptyList())
-    val uiReceipts: StateFlow<List<ReceiptModel>>
-            = _receipts.asStateFlow()
+    private val _receipts = MutableStateFlow<List<ReceiptModel>>(emptyList())
+    val uiReceipts: StateFlow<List<ReceiptModel>> = _receipts.asStateFlow()
     var isErr = mutableStateOf(false)
     var isLoading = mutableStateOf(false)
     var error = mutableStateOf(Exception())

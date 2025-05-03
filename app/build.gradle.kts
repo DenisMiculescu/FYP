@@ -134,4 +134,7 @@ dependencies {
     //OCR
     implementation(libs.text.recognition)
 
+    //WorkManager
+    implementation(libs.androidx.work.runtime.ktx)
+
 }

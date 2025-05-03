@@ -5,6 +5,7 @@ import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Details
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
@@ -78,7 +79,13 @@ object AddReceipt : AppDestination {
     override val route = "add_receipt"
 }
 
-val bottomAppBarDestinations = listOf(AddReceipt, Map, Report, Profile)
+object Reminder : AppDestination {
+    override val icon = Icons.Filled.Alarm
+    override val label = "Reminder"
+    override val route = "reminder"
+}
+
+val bottomAppBarDestinations = listOf(AddReceipt, Map, Report, Reminder, Profile)
 val userSignedOutDestinations = listOf(Login, Register)
-val allDestinations = listOf(Report, About, Details, Home, Profile, Login, Register, Map)
+val allDestinations = listOf(Report, About, Details, Home, Profile, Login, Register, Map, Reminder, AddReceipt)
 
