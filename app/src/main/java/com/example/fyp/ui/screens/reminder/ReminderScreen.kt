@@ -166,7 +166,7 @@ fun ReminderScreen(
                         onClick = {
                             val reminder = PrescriptionReminderModel(
                                 prescriptionName = prescriptionName,
-                                pickupDate = pickupDateMillis,
+                                pickupDate = pickupDateMillis, // use to test: System.currentTimeMillis() + 1 * 60 * 1000,
                                 reminderDaysBefore = reminderDays.toIntOrNull() ?: 3
                             )
                             viewModel.addReminder(context, reminder) { success ->
