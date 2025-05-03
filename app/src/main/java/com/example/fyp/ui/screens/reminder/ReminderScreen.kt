@@ -1,6 +1,7 @@
 package com.example.fyp.ui.screens.reminder
 
 import android.Manifest
+import android.app.DatePickerDialog
 import android.content.pm.PackageManager
 import android.os.Build
 import android.widget.Toast
@@ -33,7 +34,8 @@ import com.example.fyp.data.models.PrescriptionReminderModel
 import com.example.fyp.ui.components.general.Centre
 import com.example.fyp.ui.components.general.ShowLoader
 import com.example.fyp.ui.components.reminder.RemindertText
-
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun ReminderScreen(
@@ -44,6 +46,7 @@ fun ReminderScreen(
 
     var prescriptionName by remember { mutableStateOf("") }
     var reminderDays by remember { mutableStateOf("3") }
+    var pickupDateMillis by remember { mutableStateOf(System.currentTimeMillis()) }
 
     val isError = viewModel.isErr.value
     val isLoading = viewModel.isLoading.value
@@ -68,123 +71,170 @@ fun ReminderScreen(
         }
     }
 
-    Column(
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = pickupDateMillis
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+            calendar.set(year, month, dayOfMonth)
+            pickupDateMillis = calendar.timeInMillis
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+
+    LaunchedEffect(Unit) {
+        viewModel.getReminders()
+    }
+
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        RemindertText(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            text = stringResource(R.string.reminderTitle)
-        )
-
-        Text("Add Reminder", style = MaterialTheme.typography.h5)
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = prescriptionName,
-            onValueChange = { prescriptionName = it },
-            label = { Text("Prescription Name") },
-            leadingIcon = { Icon(Icons.Default.MedicalServices, contentDescription = null) },
-            modifier = Modifier.fillMaxWidth(),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.secondary,
-                focusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.secondary,
-                cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.secondary
-            )
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = reminderDays,
-            onValueChange = { reminderDays = it },
-            label = { Text("Remind how many days before pickup?") },
-            leadingIcon = { Icon(Icons.Default.AccessTime, contentDescription = null) },
-            modifier = Modifier.fillMaxWidth(),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.secondary,
-                focusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.secondary,
-                cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.secondary
-            )
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Button(
-            onClick = {
-                val reminder = PrescriptionReminderModel(
-                    prescriptionName = prescriptionName,
-                    pickupDate = System.currentTimeMillis() + 2 * 60 * 1000, // test in 2 mins
-                    reminderDaysBefore = 0 // or reminderDays.toIntOrNull() ?: 3
-                )
-
-
-                viewModel.addReminder(reminder) { success ->
-                    Toast.makeText(context, if (success) "Reminder added" else "Failed", Toast.LENGTH_SHORT).show()
-                    if (success) {
-                        viewModel.scheduleReminder(context, reminder)
-                        prescriptionName = ""
-                        reminderDays = "3"
-                        viewModel.getReminders()
-                    }
-                }
-            },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.secondary,
-                contentColor = MaterialTheme.colors.background
-            ),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(Icons.Default.Add, contentDescription = null)
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Save Reminder")
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        if (isLoading) {
-            ShowLoader("Loading Reminders...")
-        }
-
-        if (reminders.isEmpty() && !isError) {
-            Centre(Modifier.fillMaxSize()) {
-                androidx.compose.material3.Text(
-                    color = androidx.compose.material3.MaterialTheme.colorScheme.secondary,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 30.sp,
-                    lineHeight = 34.sp,
-                    textAlign = TextAlign.Center,
-                    text = stringResource(R.string.reminder_empty)
-                )
-            }
-        }
-
-        if (!isError) {
+        item {
             RemindertText(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                text = stringResource(R.string.reminderSubHeading)
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.reminderTitle)
             )
 
-            LazyColumn {
-                items(reminders, key = { it.id }) { reminder ->
-                    ReminderSwipeItem(
-                        reminder = reminder,
-                        onDelete = { id ->
-                            viewModel.deleteReminder(id) { success ->
-                                if (!success) {
-                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show()
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text("Add Reminder", style = MaterialTheme.typography.h6)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Card(
+                elevation = 4.dp,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    OutlinedTextField(
+                        value = prescriptionName,
+                        onValueChange = { prescriptionName = it },
+                        label = { Text("Prescription Name") },
+                        leadingIcon = { Icon(Icons.Default.MedicalServices, contentDescription = null) },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                            focusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                            cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                        )
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    OutlinedTextField(
+                        value = reminderDays,
+                        onValueChange = { reminderDays = it },
+                        label = { Text("Remind how many days before pickup?") },
+                        leadingIcon = { Icon(Icons.Default.AccessTime, contentDescription = null) },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                            focusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                            cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                        )
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Button(
+                        onClick = { datePickerDialog.show() },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                            contentColor = Color.White
+                        ),
+                    ) {
+                        Icon(Icons.Default.AccessTime, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Select Pickup Date")
+                    }
+
+                    Text(
+                        text = "Pickup Date: ${SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(Date(pickupDateMillis))}",
+                        style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.Medium),
+                        modifier = Modifier.padding(top = 12.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Button(
+                        onClick = {
+                            val reminder = PrescriptionReminderModel(
+                                prescriptionName = prescriptionName,
+                                pickupDate = pickupDateMillis,
+                                reminderDaysBefore = reminderDays.toIntOrNull() ?: 3
+                            )
+                            viewModel.addReminder(context, reminder) { success ->
+                                Toast.makeText(context, if (success) "Reminder added" else "Failed", Toast.LENGTH_SHORT).show()
+                                if (success) {
+                                    prescriptionName = ""
+                                    reminderDays = "3"
                                 }
                             }
-                        }
+
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                            contentColor = Color.White
+                        ),
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Save Reminder")
+                    }
+                }
+            }
+
+            if (isLoading) {
+                Spacer(modifier = Modifier.height(16.dp))
+                ShowLoader("Loading Reminders...")
+            }
+
+            if (reminders.isEmpty() && !isError) {
+                Centre(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 100.dp)
+                ) {
+                    androidx.compose.material3.Text(
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        lineHeight = 26.sp,
+                        textAlign = TextAlign.Center,
+                        text = stringResource(R.string.reminder_empty)
                     )
                 }
             }
+
+
+            if (reminders.isNotEmpty() && !isError) {
+                RemindertText(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 24.dp),
+                    text = stringResource(R.string.reminderSubHeading)
+                )
+            }
+        }
+
+        items(reminders, key = { it.id }) { reminder ->
+            ReminderSwipeItem(
+                reminder = reminder,
+                onDelete = { id ->
+                    viewModel.deleteReminder(id) { success ->
+                        if (!success) {
+                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            )
         }
     }
 }
@@ -201,6 +251,10 @@ fun ReminderSwipeItem(reminder: PrescriptionReminderModel, onDelete: (String) ->
             true
         }
     )
+
+    val formattedPickupDate = remember(reminder.pickupDate) {
+        SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(Date(reminder.pickupDate))
+    }
 
     SwipeToDismiss(
         state = dismissState,
@@ -225,7 +279,15 @@ fun ReminderSwipeItem(reminder: PrescriptionReminderModel, onDelete: (String) ->
                     .padding(vertical = 4.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = reminder.prescriptionName, style = MaterialTheme.typography.subtitle1)
+                    Text(
+                        text = reminder.prescriptionName,
+                        style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Pickup Date: $formattedPickupDate",
+                        style = MaterialTheme.typography.body1
+                    )
                     Text(
                         text = "Notify ${reminder.reminderDaysBefore} day(s) before pickup",
                         style = MaterialTheme.typography.body2,

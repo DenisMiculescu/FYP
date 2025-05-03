@@ -10,7 +10,7 @@ import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fyp.data.rules.Validator
+import com.example.fyp.data.utils.Validator
 import com.example.fyp.firebase.auth.Response
 import com.example.fyp.firebase.services.AuthService
 import com.example.fyp.firebase.services.FirebaseSignInResponse

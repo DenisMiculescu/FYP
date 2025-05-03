@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,9 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.fyp.navigation.About
 
 @Composable
@@ -39,13 +35,12 @@ fun DropDownMenu(navController: NavController) {
         contentAlignment = Alignment.Center,
 
         ) {
-        // 3 vertical dots icon
         IconButton(onClick = {
             expanded = true
         }) {
             Icon(
                 imageVector = Icons.Default.MoreVert,
-                contentDescription = "Open Info",
+                contentDescription = "Open About",
                 tint = Color.White,
                 modifier = Modifier.size(30.dp)
             )
@@ -56,17 +51,17 @@ fun DropDownMenu(navController: NavController) {
             onDismissRequest = { expanded = false },
         ) {
             DropdownMenuItem(
-                text = { Text(color = Color.White,text = "Info", fontSize = 18.sp) },
+                text = { Text(color = Color.White,text = "About", fontSize = 18.sp) },
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Filled.Info,
-                        contentDescription = "Info",
+                        contentDescription = "About",
                         tint = Color.White,
                         modifier = Modifier.size(24.dp)
                     )
                 },
                 onClick = {
-                    selectedOptionText = "Info"
+                    selectedOptionText = "About"
                     expanded = false
                     navController.navigate(About.route)
                 },

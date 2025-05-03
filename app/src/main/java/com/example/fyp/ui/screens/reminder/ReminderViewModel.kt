@@ -7,12 +7,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.example.fyp.firebase.prescription.PrescriptionReminderRepository
 import com.example.fyp.data.models.PrescriptionReminderModel
-import com.example.fyp.data.rules.ReminderWorker
+import com.example.fyp.data.utils.ReminderWorker
+import com.example.fyp.firebase.prescription.PrescriptionReminderRepository
 import com.example.fyp.firebase.services.AuthService
-import com.example.fyp.firebase.services.FirestoreService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -62,10 +62,28 @@ class ReminderViewModel @Inject constructor(
         }
     }
 
-    fun addReminder(reminder: PrescriptionReminderModel, onResult: (Boolean) -> Unit) {
+    fun addReminder(context: Context, baseReminder: PrescriptionReminderModel, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
-            repository.addReminder(reminder) { success ->
-                if (success) getReminders()
+            repository.addReminder(baseReminder) { success ->
+                if (success) {
+                    // Refresh to get the Firestore-assigned ID
+                    getReminders()
+
+                    // Delay to ensure state updates before finding the reminder
+                    viewModelScope.launch {
+                        delay(500)
+                        val syncedReminder = _reminders.value.find {
+                            it.prescriptionName == baseReminder.prescriptionName &&
+                                    it.pickupDate == baseReminder.pickupDate
+                        }
+
+                        if (syncedReminder != null && !syncedReminder.id.isNullOrBlank()) {
+                            scheduleReminder(context, syncedReminder)
+                        } else {
+                            Timber.e("ReminderViewModel: Failed to find synced reminder with ID")
+                        }
+                    }
+                }
                 onResult(success)
             }
         }
@@ -81,12 +99,19 @@ class ReminderViewModel @Inject constructor(
     }
 
     fun scheduleReminder(context: Context, reminder: PrescriptionReminderModel) {
-        val triggerTimeMillis = reminder.pickupDate - reminder.reminderDaysBefore * 24 * 60 * 60 * 1000L
+        val triggerTimeMillis =
+            reminder.pickupDate - reminder.reminderDaysBefore * 24 * 60 * 60 * 1000L
         val delay = triggerTimeMillis - System.currentTimeMillis()
 
-        if (delay <= 0) return
+        if (delay <= 0 || reminder.id.isNullOrBlank()) {
+            Timber.e("ReminderViewModel: Reminder not scheduled. Invalid delay or missing ID.")
+            return
+        }
 
-        val inputData = workDataOf("prescriptionName" to reminder.prescriptionName)
+        val inputData = workDataOf(
+            "prescriptionName" to reminder.prescriptionName,
+            "reminderId" to reminder.id
+        )
 
         val workRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
             .setInitialDelay(delay, TimeUnit.MILLISECONDS)
@@ -94,6 +119,6 @@ class ReminderViewModel @Inject constructor(
             .build()
 
         WorkManager.getInstance(context).enqueue(workRequest)
+        Timber.i("ReminderViewModel: Scheduled reminder '${reminder.prescriptionName}' in ${delay / 1000}s")
     }
 }
-

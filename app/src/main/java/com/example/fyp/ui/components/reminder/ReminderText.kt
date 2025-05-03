@@ -20,7 +20,7 @@ fun RemindertText(modifier: Modifier = Modifier, text: String) {
             top = 24.dp,
             bottom = 24.dp
         ),
-        verticalArrangement = Arrangement.spacedBy(24.dp)) {
+        verticalArrangement = Arrangement.spacedBy(48.dp)) {
         Text(
             text = text,
             fontWeight = FontWeight.Bold,

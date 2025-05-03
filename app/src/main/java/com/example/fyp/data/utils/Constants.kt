@@ -1,4 +1,4 @@
-package com.example.fyp.data.rules
+package com.example.fyp.data.utils
 
 object Constants {
 

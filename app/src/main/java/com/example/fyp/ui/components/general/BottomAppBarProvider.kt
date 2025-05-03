@@ -1,7 +1,9 @@
 package com.example.fyp.ui.components.general
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fyp.navigation.AddReceipt
 import com.example.fyp.navigation.AppDestination
@@ -16,8 +18,12 @@ fun BottomAppBarProvider(
     NavigationBar {
         destinations.forEach { screen ->
             NavigationBarItem(
-                icon = { Icon(imageVector = screen.icon, contentDescription = screen.label) },
-                label = { Text(screen.label) },
+                icon = {
+                    Column(horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
+                        Icon(imageVector = screen.icon, contentDescription = screen.label)
+                        Text(screen.label, fontSize = 10.sp)
+                    }
+                },
                 selected = currentScreen.route == screen.route,
                 onClick = {
                     if (screen == AddReceipt) {
@@ -31,8 +37,10 @@ fun BottomAppBarProvider(
                             }
                         }
                     }
-                }
+                },
+                alwaysShowLabel = true
             )
+
         }
     }
 }

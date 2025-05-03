@@ -71,19 +71,19 @@ fun ReportScreen(
                         text = stringResource(R.string.empty_list)
                     )}
 
-            if (!isError) {
+            if (receipts.isNotEmpty() && !isError) {
+                TextField(
+                    value = filterText,
+                    onValueChange = { value -> filterText = value },
+                    label = { Text("Search Pharmacy") },
+                    modifier = Modifier.fillMaxWidth()
+                )
                 ReceiptCardList(
                     receipts = filteredReceipts,
                     onClickReceiptDetails = onClickReceiptDetails,
                     onDeleteReceipt = { receipt: ReceiptModel ->
                         reportViewModel.deleteReceipt(receipt)
                     },
-                )
-                TextField(
-                    value = filterText,
-                    onValueChange = { value -> filterText = value },
-                    label = { Text("Search Pharmacy") },
-                    modifier = Modifier.fillMaxWidth()
                 )
             }
             if (isError) {

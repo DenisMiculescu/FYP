@@ -1,8 +1,8 @@
 package com.example.fyp.firebase.database
 
 import android.net.Uri
-import com.example.fyp.data.rules.Constants.RECEIPT_COLLECTION
-import com.example.fyp.data.rules.Constants.USER_EMAIL
+import com.example.fyp.data.utils.Constants.RECEIPT_COLLECTION
+import com.example.fyp.data.utils.Constants.USER_EMAIL
 import com.example.fyp.firebase.services.AuthService
 import com.example.fyp.firebase.services.FirestoreService
 import com.example.fyp.firebase.services.Receipt
