@@ -3,7 +3,7 @@ package com.example.fyp.data.models
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.serialization.Serializable
 
-data class Pharmacy(
+data class PharmacyModel(
     val name: String,
     val latLng: LatLng,
     val address: String

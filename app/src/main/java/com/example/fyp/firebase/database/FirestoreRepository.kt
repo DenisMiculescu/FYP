@@ -44,14 +44,13 @@ class FirestoreRepository
             .await()
     }
 
-    override suspend fun update(email: String,
-                                receipt: Receipt) {
-        val receiptWithModifiedDate =
-            receipt.copy(dateModified = Date())
-
-        firestore.collection(RECEIPT_COLLECTION)
-            .document(receipt._id)
-            .set(receiptWithModifiedDate).await()
+    override suspend fun update(email: String, receipt: Receipt) {
+//        val receiptWithModifiedDate =
+//            receipt.copy(dateModified = Date())
+//
+//        firestore.collection(RECEIPT_COLLECTION)
+//            .document(receipt._id)
+//            .set(receiptWithModifiedDate).await()
     }
 
     override suspend fun delete(email: String,

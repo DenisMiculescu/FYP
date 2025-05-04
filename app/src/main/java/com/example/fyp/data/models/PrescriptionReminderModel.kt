@@ -8,3 +8,4 @@ data class PrescriptionReminderModel(
     val reminderDaysBefore: Int = 3,
 )
 
+

@@ -10,7 +10,6 @@ import java.text.DateFormat
 @Composable
 internal fun ReceiptCardList(
     receipts: List<ReceiptModel>,
-    modifier: Modifier = Modifier,
     onDeleteReceipt: (ReceiptModel) -> Unit,
     onClickReceiptDetails: (String) -> Unit,
 ) {

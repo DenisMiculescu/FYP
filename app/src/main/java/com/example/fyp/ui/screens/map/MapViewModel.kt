@@ -3,12 +3,12 @@ package com.example.fyp.ui.screens.map
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fyp.data.models.Pharmacy
 import com.example.fyp.data.models.PlacesResponse
 import com.example.fyp.location.LocationService
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import android.location.Location
+import com.example.fyp.data.models.PharmacyModel
 import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -31,8 +31,8 @@ class MapViewModel @Inject constructor(
 
     private lateinit var placesClient: PlacesClient
 
-    private val _pharmacies = MutableStateFlow<List<Pharmacy>>(emptyList())
-    val pharmacies: StateFlow<List<Pharmacy>> get() = _pharmacies
+    private val _pharmacies = MutableStateFlow<List<PharmacyModel>>(emptyList())
+    val pharmacies: StateFlow<List<PharmacyModel>> get() = _pharmacies
 
     fun initializePlaces(context: Context, apiKey: String) {
         if (!Places.isInitialized()) {
@@ -78,7 +78,7 @@ class MapViewModel @Inject constructor(
                 }
 
                 _pharmacies.value = filtered.map {
-                    Pharmacy(
+                    PharmacyModel(
                         name = it.name,
                         latLng = LatLng(it.geometry.location.lat, it.geometry.location.lng),
                         address = it.vicinity
